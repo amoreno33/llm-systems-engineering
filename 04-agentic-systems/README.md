@@ -314,6 +314,7 @@ Esta lista incluye herramientas probadas en producción para trabajar con agente
 | :--- | :--- | :--- | :--- |
 | **BMAD** | Build, Measure, Adjust, Deploy | Proyectos con ciclo completo y equipos | [Link pendiente] |
 | **Spec-Kit** | Specs ejecutables con workflow de 6 pasos: constitution → specify → plan → tasks → implement → analyze | Desarrollo con specs que generan código directamente. 91k+ estrellas, 100+ extensiones comunitarias | [github.com/github/spec-kit](https://github.com/github/spec-kit) |
+| **Superpowers** | Metodología completa con skills automáticos: brainstorming → worktrees → plans → subagent-driven-dev → TDD → code review → finish | Workflow end-to-end con TDD forzado y subagentes. 171k+ estrellas, filosofía de diseño intencional | [github.com/obra/superpowers](https://github.com/obra/superpowers) |
 | **Matt Pocock Skills** | Skills modulares para agentes | Ingeniería disciplinada con IA | [github.com/mattpocock/skills](https://github.com/mattpocock/skills) |
 
 ### Skills Útiles (Matt Pocock)
