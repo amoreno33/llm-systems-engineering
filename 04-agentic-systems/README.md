@@ -45,6 +45,10 @@ Obligamos al agente a trabajar sobre un artefacto determinístico:
 
 > **Dato con respaldo:** El paper *"Chain of Specification: Enhancing LLM Reasoning"* (2024) demuestra que separar el diseño de la implementación mediante una especificación intermedia reduce errores de lógica en un **38%** vs. prompting directo.
 
+**Specs ejecutables vs. verificables:**
+- **Verificables** (tradicional): La spec es un documento que valida el código después de escrito.
+- **Ejecutables** (moderno, ej: Spec-Kit): La spec **genera** el código directamente. El workflow es: `constitution → specify → plan → tasks → implement → analyze`. La spec es el input del runtime, no solo documentación.
+
 ---
 
 ## 🏗️ Frameworks Agénticos: Cuándo Usar Cada Uno

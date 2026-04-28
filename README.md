@@ -28,6 +28,19 @@ Este repositorio acompaña la mentalidad de **Specification Driven Development (
 
 > **Principio Clave:** El prompt deja de ser el producto. El producto es el sistema: contexto, herramientas, reglas y verificación.
 
+### SDD en la Práctica: Specifications Ejecutables
+
+La diferencia crítica en SDD moderno (como en [Spec-Kit](https://github.com/github/spec-kit)) es que **las especificaciones no solo verifican el código — lo generan**. El workflow típico:
+
+1. **Constitution** — Principios del proyecto
+2. **Specify** — Qué querés construir (sin mencionar tecnología)
+3. **Plan** — Cómo lo vas a construir (con tech stack)
+4. **Tasks** — Lista accionable de tareas
+5. **Implement** — Ejecución automatizada
+6. **Analyze** — Validación de consistencia
+
+> **Por qué esto importa:** En lugar de *one-shot code generation* ("Dame el código ya"), SDD fuerza **multi-step refinement**. Esto reduce errores de lógica en ~38% (Chain of Specification, 2024) porque separás el *qué* del *cómo* antes de ejecutar.
+
 Para ver cómo aplicamos esto en el día a día, consulta el [Agentic SDD Starter](./agentic-sdd-starter/README.md).
 
 ---
