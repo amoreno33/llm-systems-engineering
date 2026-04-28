@@ -1,6 +1,6 @@
-# 🧠 AI Mastery Hub: The Senior Engineering Guide
+# 🧠 LLM Systems Engineering: Production AI Guide
 
-Bienvenido al repositorio central de conocimiento para ingenieros de IA y desarrolladores Senior. Este no es un curso básico de prompting; es un **hub de ingeniería** diseñado para equipos que construyen sistemas de producción escalables, seguros y eficientes.
+Bienvenido al repositorio central de conocimiento para ingenieros de IA y desarrolladores. Este no es un curso básico de prompting; es un **hub de ingeniería** diseñado para equipos que construyen sistemas de producción escalables, seguros y eficientes.
 
 Como partners de **AWS** y **Microsoft**, nuestra misión es dominar las abstracciones de alto nivel sin perder de vista los fundamentos técnicos y la gobernanza corporativa.
 
@@ -8,7 +8,7 @@ Como partners de **AWS** y **Microsoft**, nuestra misión es dominar las abstrac
 
 ## 🗺️ Mapa de Navegación
 
-| Sección | Core Focus | Valor para Senior Engineering |
+| Sección | Core Focus | Valor para Ingeniería de IA |
 | :--- | :--- | :--- |
 | **[01. Foundations](./01-foundations/README.md)** | Modern Core | Optimización de costos (tokens) y control de determinismo. |
 | **[02. LLM Engineering](./02-llm-engineering/README.md)** | Intelligence Layer | Mitigación de alucinaciones y dominio de la RAM del agente. |
@@ -97,13 +97,13 @@ Este proyecto está diseñado para quienes trabajan con sistemas de IA avanzados
 | **[CLAUDE.md para un proyecto real](./examples/claude-md-real-project.md)** | Un `CLAUDE.md` completo para una API de pagos (Node.js/TypeScript). Copialo y adaptalo. |
 | **[Decision Log (workflow.md)](./examples/workflow-md-decision-log.md)** | Cómo se ve un log de decisiones después de 2 semanas de desarrollo. Con antes/después. |
 | **[Obsidian como Second Brain](./examples/obsidian-second-brain.md)** | Estructura de vault, notas con links bidireccionales, Graph View y plugins de IA. |
-| **[Antes vs Después: Prompts Reales](./examples/antes-despues-prompts.md)** | 5 escenarios reales: el prompt vago vs. el prompt senior. La diferencia es brutal. |
+| **[Antes vs Después: Prompts Reales](./examples/antes-despues-prompts.md)** | 5 escenarios reales: el prompt vago vs. el prompt optimizado. La diferencia es brutal. |
 
 ---
 
 ## 🛠️ Contribución
 
-Este es un repositorio vivo. Como equipo senior, esperamos contribuciones que suban el nivel técnico:
+Este es un repositorio vivo. Esperamos contribuciones que suban el nivel técnico:
 1.  Nuevos patrones de RAG probados en producción.
 2.  Benchmarks de modelos en tareas específicas de nuestra industria.
 3.  Scripts de automatización y hooks de seguridad.

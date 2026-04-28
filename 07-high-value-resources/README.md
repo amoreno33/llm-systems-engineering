@@ -1,6 +1,6 @@
 # 📚 High-Value Resources for AI Engineers
 
-Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA senior debería tener en sus marcadores. Se actualiza constantemente con lo mejor del ecosistema.
+Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA debería tener en sus marcadores. Se actualiza constantemente con lo mejor del ecosistema.
 
 > **¿Por dónde empezar si llegás frío?** Seguí este orden:
 > 1. Instalá **Cursor** y hacé tu primer proyecto con vibe coding.

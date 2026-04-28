@@ -16,7 +16,7 @@ registro, login, logout, reset de password y 2FA"
 inventa nombres de tablas, usa librerías que no tenés en el proyecto 
 y mezcla Express con Fastify porque "le pareció mejor".
 
-### ✅ Lo que hace un Senior con Spec-First:
+### ✅ Enfoque con Spec-First:
 ```
 "Implementá SOLO el endpoint POST /auth/login según esta spec:
 
@@ -50,7 +50,7 @@ Eso viene en otra spec."
 **Resultado:** El agente reescribe toda la autenticación porque no sabe 
 qué parte está rota. Probablemente rompe algo que sí funcionaba.
 
-### ✅ Senior:
+### ✅ Optimizado:
 ```
 "El endpoint POST /auth/login devuelve 500 cuando el email no existe en la DB.
 
@@ -109,7 +109,7 @@ Tú: "dale"
 **Resultado:** Desperdiciaste un turno de prompt donde podías 
 inyectar contexto valioso.
 
-### ✅ Senior:
+### ✅ Optimizado:
 ```
 Agente: "¿Procedo con la implementación?"
 Tú: "Sí, avanzá. Tené en cuenta que ese módulo usa 
@@ -175,4 +175,4 @@ que el equipo no vio. Valor inmediato.
 
 > **La diferencia no es "saber más sobre IA".**
 > **Es saber formular lo que querés con precisión.**
-> Un junior pide features. Un senior escribe specs.
+> Un junior pide features. Un ingeniero experimentado escribe specs.

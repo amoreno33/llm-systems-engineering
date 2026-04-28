@@ -1,6 +1,6 @@
 # 🤖 Agentic AI & Systems Execution
 
-En la ingeniería de IA senior, el paso de "Chat" a "Agente" es el cambio fundamental de paradigma. Un agente no solo genera texto; **razona, planifica y actúa** sobre su entorno.
+En la ingeniería de IA, el paso de "Chat" a "Agente" es el cambio fundamental de paradigma. Un agente no solo genera texto; **razona, planifica y actúa** sobre su entorno.
 
 > **Conexión con vibe coding:** Cuando usás Cursor en modo "Agent" o Claude Code, ya estás usando un sistema agéntico. El modelo lee tu código, planifica cambios, ejecuta comandos y evalúa los resultados — todo en loop. Esta sección te explica cómo controlar eso en lugar de que te controle a vos.
 
@@ -22,7 +22,7 @@ En la ingeniería de IA senior, el paso de "Chat" a "Agente" es el cambio fundam
 
 ## 🧠 El Unificador: "Spec-First Engineering"
 
-Sin importar si usás BMAD, LangGraph o CrewAI, el éxito de un agente senior depende de un solo concepto: **La especificación es el código del agente.**
+Sin importar si usás BMAD, LangGraph o CrewAI, el éxito de un agente depende de un solo concepto: **La especificación es el código del agente.**
 
 ### ¿Por qué fallan los agentes?
 Los agentes fallan cuando les damos instrucciones vagas ("Arregla este bug"). Esto deja demasiada libertad al modelo probabilístico, aumentando el riesgo de alucinaciones y **loops infinitos** donde el agente sigue intentando sin progresar.
@@ -36,7 +36,7 @@ Los agentes fallan cuando les damos instrucciones vagas ("Arregla este bug"). Es
            Test esperado: usuario@EMPRESA.com debe hacer login correctamente."
 ```
 
-### La Solución Senior: Spec antes de código
+### La Solución: Spec antes de código
 Obligamos al agente a trabajar sobre un artefacto determinístico:
 1.  **Input:** La instrucción del usuario.
 2.  **Plan:** El agente genera una `spec` (qué va a hacer, qué archivos toca, qué tests debe pasar).

@@ -33,7 +33,7 @@ Usuario pregunta → [LangSmith captura]
 
 ## 🔒 IA Security: El Ataque de "Exfiltración por Imagen"
 
-Para un equipo senior, el riesgo más grande no es que el modelo diga una mala palabra, sino la **Inyección de Prompt Indirecta**.
+Para equipos de producción, el riesgo más grande no es que el modelo diga una mala palabra, sino la **Inyección de Prompt Indirecta**.
 
 ### El Escenario de Pesadilla:
 Imagina que construyes un agente que resume correos o PDFs para tus usuarios.

@@ -2,7 +2,7 @@
 
 La ingeniería de LLMs va más allá de escribir prompts bonitos. Se trata de diseñar sistemas determinísticos sobre un motor probabilístico.
 
-## 📝 Prompt Engineering Senior
+## 📝 Prompt Engineering Avanzado
 
 ### 1. Chain-of-Thought (CoT)
 Inducir al modelo a razonar antes de responder.
