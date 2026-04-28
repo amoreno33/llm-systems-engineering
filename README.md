@@ -2,7 +2,7 @@
 
 Bienvenido al repositorio central de conocimiento para ingenieros de IA y desarrolladores. Este no es un curso básico de prompting; es un **hub de ingeniería** diseñado para equipos que construyen sistemas de producción escalables, seguros y eficientes.
 
-Nuestro enfoque combina las mejores prácticas de infraestructura cloud (**AWS** y **Azure**) con fundamentos técnicos sólidos y estrategias de gobernanza corporativa, para construir sistemas de IA realmente productivos.
+El contenido abarca desde fundamentos técnicos hasta implementación en producción, incluyendo optimización de costos, RAG avanzado, sistemas agénticos, arquitecturas cloud (AWS/Azure) y seguridad.
 
 ---
 
