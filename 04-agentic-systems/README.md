@@ -259,6 +259,8 @@ Agente (paso REFACTOR):
 **El Problema:**
 El agente genera código rápido, pero con el tiempo el proyecto se vuelve un caos: código duplicado, funciones gigantes, módulos acoplados. Porque el agente puede codear 10x más rápido, también puede generar **entropía** 10x más rápido.
 
+> **Esto pasa con BMAD, con Spec-Kit, y con cualquier framework.** Ninguna metodología te salva automáticamente del caos si no invertís en diseño todos los días.
+
 **La Solución: Invertir en Diseño Todos Los Días**
 
 > "Invest in the design of the system every day."  
