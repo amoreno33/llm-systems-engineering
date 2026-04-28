@@ -1,6 +1,6 @@
-# 🧠 LLM Systems Engineering: Production AI Guide
+# 🧠 LLM Systems Engineering: Guía Práctica
 
-Bienvenido al repositorio central de conocimiento para ingenieros de IA y desarrolladores. Este no es un curso básico de prompting; es un **hub de ingeniería** diseñado para equipos que construyen sistemas de producción escalables, seguros y eficientes.
+Una guía práctica para desarrolladores de IA que buscan iniciarse o reforzar conocimientos en el desarrollo de sistemas basados en LLMs.
 
 El contenido abarca desde fundamentos técnicos hasta implementación en producción, incluyendo optimización de costos, RAG avanzado, sistemas agénticos, arquitecturas cloud (AWS/Azure) y seguridad.
 
