@@ -136,6 +136,8 @@ Agente: [Genera el código correcto la primera vez]
 
 > **Tip memorable:** Nadie sabe exactamente lo que quiere hasta que ve lo que no quiere. La grilling session te obliga a pensar antes de codear.
 
+> 📚 **¿No sabés qué es una "Grilling Session"?** → Ver [Conceptos Fundamentales](../07-high-value-resources/README.md#-conceptos-fundamentales)
+
 **Herramientas que implementan esto:**
 - **BMAD** tiene una fase de "Interview" antes de generar specs
 - **Matt Pocock Skills**: `/grill-me` y `/grill-with-docs`
@@ -148,6 +150,8 @@ Agente: [Genera el código correcto la primera vez]
 El agente usa 20 palabras donde 1 es suficiente. Dice "implementación de la funcionalidad de autenticación de usuarios" en lugar de simplemente "login". Esto consume tokens, dificulta la lectura y hace que el contexto se llene de ruido.
 
 **La Solución: Lenguaje Compartido (Domain Language)**
+
+> 📚 **¿Qué es Domain-Driven Design?** → Ver [Conceptos Fundamentales](../07-high-value-resources/README.md#domain-driven-design-ddd)
 
 Inspirado en **Domain-Driven Design** de Eric Evans, la idea es crear un vocabulario común entre vos y el agente mediante un archivo `CONTEXT.md` en la raíz del proyecto.
 
@@ -205,6 +209,8 @@ El agente necesita **feedback rápido** sobre si el código que generó funciona
    - Ve los errores reales en tiempo de ejecución.
 
 **TDD con Agentes: Red-Green-Refactor**
+
+> 📚 **¿No sabés qué es TDD o red-green-refactor?** → Ver [Conceptos Fundamentales](../07-high-value-resources/README.md#tdd-test-driven-development)
 
 El loop clásico de TDD, pero aplicado a desarrollo con IA:
 
@@ -334,6 +340,8 @@ Estos archivos viven en la raíz de tu proyecto y el agente los lee automáticam
 | **CONTRIBUTING.md** | Guía de contribución (también para agentes) | Proyectos open source o con equipo grande |
 
 **Ejemplo de ADR (Architecture Decision Record):**
+
+> 📚 **¿Qué son los ADRs?** → Ver [Conceptos Fundamentales](../07-high-value-resources/README.md#adr-architecture-decision-record)
 
 ```markdown
 # ADR 003: Usar Zod en lugar de Joi para Validación

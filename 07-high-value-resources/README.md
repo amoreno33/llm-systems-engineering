@@ -1,13 +1,56 @@
 # 📚 High-Value Resources for AI Engineers
 
-Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA debería tener en sus marcadores. Se actualiza constantemente con lo mejor del ecosistema.
+Esta es una lista curada de recursos para desarrolladores que trabajan con sistemas de IA. Se actualiza constantemente con herramientas, metodologías y referencias fundamentales.
 
-> **¿Por dónde empezar si llegás frío?** Seguí este orden:
-> 1. Instalá **Cursor** y hacé tu primer proyecto con vibe coding.
-> 2. Suscribite a **The Batch** para el contexto semanal de la industria.
-> 3. Hacé el curso corto de **AI Agents in LangGraph** (2-3 horas).
-> 4. Agregá **Anthropic Cookbook** y **OpenAI Cookbook** a favoritos — los vas a necesitar cuando construyas algo real.
-> 5. Los papers son para después, cuando quieras entender el "por qué" de lo que ya usás.
+---
+
+## 📖 Conceptos Fundamentales
+
+**→ Lee esta sección primero si ves términos desconocidos en el resto del repo.**
+
+Antes de profundizar en herramientas, es importante entender estos conceptos que se mencionan frecuentemente en desarrollo con IA:
+
+### TDD (Test-Driven Development)
+Metodología de desarrollo donde escribís **tests antes del código**. El ciclo es:
+1. **RED**: Escribir un test que falle
+2. **GREEN**: Escribir el código mínimo para que pase
+3. **REFACTOR**: Mejorar el código sin romper el test
+
+**Por qué importa con agentes:** Sin tests, el agente no tiene feedback sobre si su código funciona. El TDD le da un loop de validación automático.
+
+**Lectura recomendada:** *Test Driven Development: By Example* — Kent Beck
+
+---
+
+### Domain-Driven Design (DDD)
+Enfoque de desarrollo que prioriza crear un **lenguaje compartido** entre desarrolladores y expertos del dominio. En lugar de decir "usuario", "cliente", "account holder" indistintamente, el equipo acuerda un solo término.
+
+**Por qué importa con agentes:** Un archivo `CONTEXT.md` con el lenguaje del proyecto hace que el agente sea más conciso y genere código con nombres consistentes. Puede reducir uso de tokens en 30-50%.
+
+**Lectura recomendada:** *Domain-Driven Design* — Eric Evans
+
+---
+
+### ADR (Architecture Decision Record)
+Documento que registra **decisiones técnicas importantes** y su contexto. Por ejemplo: "¿Por qué usamos Zod en lugar de Joi para validación?"
+
+**Por qué importa con agentes:** En lugar de explicar la misma decisión 20 veces, le decís al agente "lee ADR 003". Es tu memoria de largo plazo.
+
+**Template recomendado:** [adr/madr](https://github.com/adr/madr)
+
+---
+
+### Grilling Session
+Técnica donde, en lugar de darle instrucciones directas al agente, hacés que **te interrogue primero** sobre lo que realmente querés construir. Reduce desalineamiento.
+
+**Ejemplo:**
+```
+❌ "Haceme un sistema de pagos"
+✅ "Necesito pagos. Antes de empezar, preguntame sobre:
+    casos de uso, monedas, recurrencia, webhooks, etc."
+```
+
+**Referencia:** Matt Pocock Skills — `/grill-me`
 
 ---
 
@@ -26,10 +69,13 @@ Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA deberí
 *   **[SDD Starter](../agentic-sdd-starter/):** Specification-Driven Development. Incluido en este repo con templates de `CLAUDE.md` y `CONTEXT.md`.
 
 ## 📰 Newsletters & Blogs Técnicos
-*   **[The Batch (DeepLearning.AI)](https://www.deeplearning.ai/the-batch/):** Resumen semanal de Andrew Ng sobre la industria.
-*   **[Lilian Weng's Blog](https://lilianweng.github.io/posts/):** Análisis profundos de arquitecturas (LLM Powered Assistants, RLHF, etc.).
-*   **[The Sequence](https://thesequence.substack.com/):** Un desglose técnico de los últimos papers y herramientas.
-*   **[Anthropic News](https://www.anthropic.com/news):** Imprescindible para estar al día con Claude y seguridad en IA.
+
+Mantenerse actualizado sin ruido:
+
+*   **[The Batch (DeepLearning.AI)](https://www.deeplearning.ai/the-batch/):** Newsletter semanal de Andrew Ng. Resume los avances más importantes en IA de forma accesible. **Gratis.**
+*   **[Lilian Weng's Blog](https://lilianweng.github.io/posts/):** Análisis técnicos profundos de arquitecturas de IA (LLM Agents, RLHF, prompting). Escrito por VP of Research en OpenAI.
+*   **[The Sequence](https://thesequence.substack.com/):** Desglose técnico semanal de papers y herramientas nuevas. Para quienes quieren estar al día con la investigación.
+*   **[Anthropic News](https://www.anthropic.com/news):** Blog oficial de Anthropic (Claude). Imprescindible si usás Claude en producción.
 
 ## 🎓 Cursos de Alto Nivel
 *   **[DeepLearning.AI - AI Agents in LangGraph](https://www.deeplearning.ai/short-courses/ai-agents-in-langgraph/):** Curso corto y técnico sobre agentes modernos.
@@ -41,10 +87,21 @@ Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA deberí
 *   **[Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (2020)](https://arxiv.org/abs/2005.11401):** El origen del RAG.
 *   **[Chain-of-Thought Prompting Elicits Reasoning in Large Language Models (2022)](https://arxiv.org/abs/2201.11903):** Por qué pedirle al modelo que piense funciona.
 
-## 🛠️ Herramientas "Game Changers"
-*   **[Cursor](https://cursor.sh/):** El IDE que está redefiniendo el desarrollo asistido por IA.
-*   **[Ollama](https://ollama.com/):** Ejecuta LLMs potentes en tu máquina local con una sola línea de comando.
-*   **[LiteLLM](https://github.com/BerriAI/litellm):** Una interfaz unificada para llamar a 100+ LLMs con formato OpenAI.
+## 🛠️ Herramientas de Desarrollo con IA
+
+### IDEs y Editores con IA
+*   **[Cursor](https://cursor.sh/):** Editor basado en VS Code con agente de IA integrado. Puede leer toda tu codebase y ejecutar cambios multi-archivo. Alternativa: GitHub Copilot en VS Code.
+*   **[Windsurf](https://codeium.com/windsurf):** Editor similar a Cursor, pero con enfoque en privacidad y modelos locales.
+
+### LLMs Locales
+*   **[Ollama](https://ollama.com/):** Ejecuta modelos como Llama 3, Mistral y otros en tu máquina sin enviar código a la nube. Ideal para empresas con políticas de privacidad estrictas.
+*   **[LM Studio](https://lmstudio.ai/):** Interfaz gráfica para ejecutar LLMs localmente con soporte para GPU.
+
+### Testing y Evaluación
+*   **[Promptfoo](https://github.com/promptfoo/promptfoo):** Framework para testear y evaluar prompts. Permite comparar outputs de diferentes modelos y versiones.
+
+### Interoperabilidad
+*   **[LiteLLM](https://github.com/BerriAI/litellm):** Interfaz unificada para llamar a 100+ LLMs (OpenAI, Anthropic, Azure, local) con el mismo código. Útil para no quedar atado a un proveedor.
 
 ---
 
