@@ -309,7 +309,7 @@ Esta lista incluye herramientas probadas en producción para trabajar con agente
 | Framework | Propósito | Mejor para | Repositorio |
 | :--- | :--- | :--- | :--- |
 | **BMAD** | Build, Measure, Adjust, Deploy | Proyectos con ciclo completo y equipos | [Link pendiente] |
-| **Spec-Kit** | Specs verificables y modulares | Desarrollo rápido con validación | [github.com/spec-kit](https://github.com/spec-kit) |
+| **Spec-Kit** | Specs ejecutables con workflow de 6 pasos: constitution → specify → plan → tasks → implement → analyze | Desarrollo con specs que generan código directamente. 91k+ estrellas, 100+ extensiones comunitarias | [github.com/github/spec-kit](https://github.com/github/spec-kit) |
 | **Matt Pocock Skills** | Skills modulares para agentes | Ingeniería disciplinada con IA | [github.com/mattpocock/skills](https://github.com/mattpocock/skills) |
 
 ### Skills Útiles (Matt Pocock)
