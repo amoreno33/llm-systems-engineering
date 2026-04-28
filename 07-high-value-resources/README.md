@@ -17,6 +17,13 @@ Esta es una lista curada de recursos "top-tier" que todo ingeniero de IA deberí
 *   **[OpenAI Cookbook](https://github.com/openai/openai-cookbook):** Guías exhaustivas para GPT-4o y o1.
 *   **[Microsoft GraphRAG](https://github.com/microsoft/graphrag):** Repositorio oficial para implementar RAG basado en grafos.
 *   **[Promptfoo](https://github.com/promptfoo/promptfoo):** Herramienta esencial para testeo y evaluación de prompts.
+*   **[Matt Pocock Skills](https://github.com/mattpocock/skills):** 34k+ stars. Skills modulares para ingeniería disciplinada con agentes de IA.
+
+## 🤖 Frameworks y Metodologías para Agentes
+
+*   **[BMAD Method](https://bmad.ai/):** Build, Measure, Adjust, Deploy. Framework completo para desarrollo con agentes en ciclo de vida completo.
+*   **[Spec-Kit](https://github.com/spec-kit):** Framework para desarrollo basado en especificaciones verificables y modulares.
+*   **[SDD Starter](../agentic-sdd-starter/):** Specification-Driven Development. Incluido en este repo con templates de `CLAUDE.md` y `CONTEXT.md`.
 
 ## 📰 Newsletters & Blogs Técnicos
 *   **[The Batch (DeepLearning.AI)](https://www.deeplearning.ai/the-batch/):** Resumen semanal de Andrew Ng sobre la industria.

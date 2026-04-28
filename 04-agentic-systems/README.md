@@ -103,6 +103,281 @@ En entornos corporativos, la autonomía total es un riesgo operacional. El HITL 
 > **Tip memorable:** Pensá en el HITL como el `git diff` antes del commit. El agente propone, vos aprobás. Sin ese paso, estás haciendo `git push --force` en producción con los ojos cerrados.
 
 ---
+
+## 🎯 Los 4 Patrones de Fallo Comunes (Y Cómo Solucionarlos)
+
+Esta sección está basada en los aprendizajes de **Matt Pocock** ([34k+ stars en GitHub](https://github.com/mattpocock/skills)), quien identificó los errores más comunes al desarrollar con agentes y propone soluciones concretas.
+
+### 1️⃣ "El Agente No Hizo Lo Que Yo Quería"
+
+**El Problema:**
+La causa #1 de fracaso en desarrollo de software (con o sin IA) es el **desalineamiento**. Creés que el dev (o el agente) entendió lo que querías. Ves el resultado y te das cuenta de que no captó nada.
+
+**La Solución: Grilling Session (Sesión de Interrogación)**
+
+En lugar de darle instrucciones y esperar, hacés que el agente **te interrogue primero**:
+
+```
+❌ Enfoque típico:
+Tú: "Haceme un sistema de pagos con Stripe"
+Agente: [Genera 800 líneas de código]
+Tú: "No, necesitaba soporte para suscripciones recurrentes..."
+
+✅ Enfoque con Grilling:
+Tú: "Necesito integrar Stripe para pagos"
+Agente: "Antes de empezar, dejame hacerte algunas preguntas:
+         - ¿Es para pagos únicos o recurrentes?
+         - ¿Qué monedas necesitás soportar?
+         - ¿Ya tenés una cuenta de Stripe configurada?
+         - ¿Cómo manejás los webhooks de confirmación?"
+Tú: [Respondés en 2 minutos]
+Agente: [Genera el código correcto la primera vez]
+```
+
+> **Tip memorable:** Nadie sabe exactamente lo que quiere hasta que ve lo que no quiere. La grilling session te obliga a pensar antes de codear.
+
+**Herramientas que implementan esto:**
+- **BMAD** tiene una fase de "Interview" antes de generar specs
+- **Matt Pocock Skills**: `/grill-me` y `/grill-with-docs`
+
+---
+
+### 2️⃣ "El Agente Es Demasiado Verboso"
+
+**El Problema:**
+El agente usa 20 palabras donde 1 es suficiente. Dice "implementación de la funcionalidad de autenticación de usuarios" en lugar de simplemente "login". Esto consume tokens, dificulta la lectura y hace que el contexto se llene de ruido.
+
+**La Solución: Lenguaje Compartido (Domain Language)**
+
+Inspirado en **Domain-Driven Design** de Eric Evans, la idea es crear un vocabulario común entre vos y el agente mediante un archivo `CONTEXT.md` en la raíz del proyecto.
+
+**Ejemplo de CONTEXT.md:**
+
+```markdown
+# Lenguaje del Proyecto
+
+## Términos del Dominio
+
+- **Usuario**: Persona con cuenta en el sistema. NO uses "cliente" ni "account holder".
+- **Pedido**: Solicitud de compra. NO uses "order request" ni "purchase".
+- **Fulfillment**: Proceso de preparación y envío. NO traducir a español.
+- **SKU**: Identificador único de producto (ej: "LAPTOP-001"). NO uses "product ID".
+
+## Decisiones de Arquitectura que el Agente DEBE respetar
+
+- Usamos **Prisma** como ORM. NO sugieras cambiar a TypeORM.
+- Los tests se escriben en **Vitest**, no Jest.
+- Las validaciones usan **Zod**, no Joi ni Yup.
+```
+
+**Resultado:**
+El agente lee este archivo al inicio de cada sesión y adopta tu lenguaje. Ahora dice "crear el SKU" en lugar de "generar el identificador único del producto en la base de datos".
+
+> **Tip memorable:** Un CONTEXT.md bien hecho puede reducir el uso de tokens en un 30-50% y hace que el código generado use nombres consistentes. Es como darle al agente el "manual de estilo" de tu proyecto.
+
+**Herramientas que lo implementan:**
+- **Matt Pocock Skills**: `/grill-with-docs` actualiza `CONTEXT.md` mientras trabajás
+- **SDD Starter Kit**: Incluye templates de `CONTEXT.md` y `CLAUDE.md`
+
+---
+
+### 3️⃣ "El Código Que Genera No Funciona"
+
+**El Problema:**
+El agente está alineado contigo sobre qué construir, pero igual produce código con bugs o que no compila. Sin feedback, el agente está volando a ciegas.
+
+**La Solución: Feedback Loops (Ciclos de Retroalimentación)**
+
+El agente necesita **feedback rápido** sobre si el código que generó funciona o no. Sin esto, cada cambio es un tiro al aire.
+
+**Los 3 Feedback Loops Esenciales:**
+
+1. **Static Types (Tipos Estáticos):**
+   - TypeScript, Python con type hints, Rust, etc.
+   - El agente ve errores de tipo **antes** de ejecutar el código.
+   
+2. **Automated Tests (Tests Automatizados):**
+   - Unit tests, integration tests.
+   - El agente puede **correr los tests** y ver si el cambio rompe algo existente.
+
+3. **Browser/Runtime Access (Acceso al Entorno):**
+   - El agente puede abrir el navegador o ejecutar el programa.
+   - Ve los errores reales en tiempo de ejecución.
+
+**TDD con Agentes: Red-Green-Refactor**
+
+El loop clásico de TDD, pero aplicado a desarrollo con IA:
+
+```
+1. RED:   Escribir un test que falle (el agente lo genera)
+2. GREEN: Escribir el código mínimo para que el test pase
+3. REFACTOR: Mejorar el código sin romper el test
+```
+
+**Ejemplo real:**
+
+```
+Tú: "Necesito una función que valide emails"
+
+Agente (paso RED):
+  test('debe validar emails correctamente', () => {
+    expect(isValidEmail('test@example.com')).toBe(true);
+    expect(isValidEmail('invalid')).toBe(false);
+  });
+  // Este test falla porque isValidEmail() no existe aún
+
+Agente (paso GREEN):
+  function isValidEmail(email: string): boolean {
+    return email.includes('@') && email.includes('.');
+  }
+  // Test pasa ✅
+
+Agente (paso REFACTOR):
+  function isValidEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+  // Test sigue pasando ✅, pero el código es más robusto
+```
+
+> **Tip memorable:** Sin tests, el agente es como un dev programando en un notepad sin compilador. No sabe si lo que escribió funciona hasta que vos lo probás manualmente.
+
+**Herramientas que lo implementan:**
+- **Matt Pocock Skills**: `/tdd` para red-green-refactor automatizado
+- **Cursor**: Puede ejecutar tests automáticamente si configurás `package.json`
+
+---
+
+### 4️⃣ "Construimos Una Bola de Barro (Ball of Mud)"
+
+**El Problema:**
+El agente genera código rápido, pero con el tiempo el proyecto se vuelve un caos: código duplicado, funciones gigantes, módulos acoplados. Porque el agente puede codear 10x más rápido, también puede generar **entropía** 10x más rápido.
+
+**La Solución: Invertir en Diseño Todos Los Días**
+
+> "Invest in the design of the system every day."  
+> — Kent Beck, *Extreme Programming Explained*
+
+**Prácticas concretas:**
+
+1. **Módulos Profundos (Deep Modules):**
+   - Un módulo es "profundo" cuando expone una **interfaz simple** pero provee **mucha funcionalidad**.
+   - Ejemplo: `saveUser(user)` internamente maneja validación, encriptación, transacciones, logs... pero para el usuario es solo una función.
+
+2. **Refactoring Frecuente:**
+   - Cada 3-4 features nuevas, dedicá una sesión a **refactorizar código duplicado**.
+   - Herramienta: `/improve-codebase-architecture` (Matt Pocock Skills) escanea el código y sugiere mejoras.
+
+3. **Explicar el Código en Contexto del Sistema:**
+   - No dejés que el agente vea solo funciones aisladas.
+   - Pedile que **explique cómo encaja** ese módulo en la arquitectura general.
+   - Herramienta: `/zoom-out` (Matt Pocock Skills) le pide al agente que explique el código en el contexto del sistema completo.
+
+**Ejemplo de Módulo Profundo:**
+
+```typescript
+// ❌ Interfaz superficial (expone complejidad al usuario)
+function saveUser(user, db, logger, validator, encryptor, emailService) {
+  // El usuario tiene que saber de TODAS estas dependencias
+}
+
+// ✅ Módulo profundo (interfaz simple, mucha funcionalidad interna)
+function saveUser(user: User) {
+  // Internamente maneja: validación, encriptación, DB, logs, emails
+  // El usuario solo pasa el user y listo
+}
+```
+
+> **Tip memorable:** El código fácil de escribir suele ser difícil de mantener. El código fácil de mantener requiere diseño intencional. Con agentes, tenés que ser **más disciplinado con el diseño**, no menos.
+
+---
+
+## 🛠️ Herramientas y Frameworks Recomendados
+
+Esta lista incluye herramientas probadas en producción para trabajar con agentes de IA.
+
+### Frameworks de Workflow
+
+| Framework | Propósito | Mejor para | Repositorio |
+| :--- | :--- | :--- | :--- |
+| **BMAD** | Build, Measure, Adjust, Deploy | Proyectos con ciclo completo y equipos | [Link pendiente] |
+| **Spec-Kit** | Specs verificables y modulares | Desarrollo rápido con validación | [github.com/spec-kit](https://github.com/spec-kit) |
+| **Matt Pocock Skills** | Skills modulares para agentes | Ingeniería disciplinada con IA | [github.com/mattpocock/skills](https://github.com/mattpocock/skills) |
+
+### Skills Útiles (Matt Pocock)
+
+**Para Código:**
+- `/grill-with-docs` — Grilling session que actualiza `CONTEXT.md` y ADRs
+- `/tdd` — Test-Driven Development con red-green-refactor
+- `/diagnose` — Loop estructurado para debugging: reproducir → minimizar → fix
+- `/improve-codebase-architecture` — Encuentra oportunidades de refactoring
+
+**Para Productividad:**
+- `/grill-me` — Sesión de preguntas antes de empezar cualquier tarea
+- `/caveman` — Modo ultra-comprimido (reduce tokens ~75%)
+
+> **Cómo instalarlas:**
+> ```bash
+> npx skills@latest add mattpocock/skills
+> ```
+> Elegís las skills que querés y en qué agente instalarlas (Cursor, Claude Code, etc.)
+
+### Documentos Esenciales del Proyecto
+
+Estos archivos viven en la raíz de tu proyecto y el agente los lee automáticamente:
+
+| Archivo | Propósito | Cuándo usarlo |
+| :--- | :--- | :--- |
+| **CONTEXT.md** | Lenguaje compartido y decisiones de arquitectura | Siempre, desde el día 1 |
+| **CLAUDE.md** | Instrucciones específicas para Claude/agentes | Proyectos con Claude Code o Cursor |
+| **docs/adr/** | Architecture Decision Records (ADRs) | Cuando tomás decisiones técnicas importantes |
+| **CONTRIBUTING.md** | Guía de contribución (también para agentes) | Proyectos open source o con equipo grande |
+
+**Ejemplo de ADR (Architecture Decision Record):**
+
+```markdown
+# ADR 003: Usar Zod en lugar de Joi para Validación
+
+## Fecha: 2025-01-15
+
+## Estado: Aceptado
+
+## Contexto:
+Necesitábamos un sistema de validación de schemas con inferencia de tipos en TypeScript.
+
+## Decisión:
+Usar **Zod** como biblioteca de validación en lugar de Joi.
+
+## Consecuencias:
+✅ Inferencia automática de tipos TypeScript
+✅ Mejor integración con tRPC
+✅ Bundle size más pequeño (12kb vs 50kb de Joi)
+❌ Sintaxis menos conocida por el equipo (curva de aprendizaje)
+
+## Alternativas consideradas:
+- Joi: Popular pero no tiene inferencia de tipos nativa
+- Yup: Mejor que Joi pero inferencia de tipos limitada
+```
+
+> **Tip memorable:** Los ADRs son tu memoria a largo plazo. Cuando el agente pregunta "¿por qué usamos Zod?", le decís "lee ADR 003". Sin esto, explicás lo mismo 20 veces.
+
+---
+
+## 📚 Recursos Complementarios
+
+**Libros citados en esta sección:**
+- *Domain-Driven Design* — Eric Evans
+- *The Pragmatic Programmer* — David Thomas & Andrew Hunt  
+- *Extreme Programming Explained* — Kent Beck
+- *A Philosophy of Software Design* — John Ousterhout
+
+**Repositorios para profundizar:**
+- [Matt Pocock Skills](https://github.com/mattpocock/skills) — 34k+ stars, skills de ingeniería para agentes
+- [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook) — Mejores prácticas para Claude
+- [LangGraph Examples](https://github.com/langchain-ai/langgraph) — Arquitecturas de agentes cíclicos
+- [Promptfoo](https://github.com/promptfoo/promptfoo) — Testing y evaluación de prompts
+
+---
 [Volver al Inicio](../README.md)
 
 
