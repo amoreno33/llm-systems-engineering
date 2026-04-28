@@ -1,0 +1,14 @@
+{
+  "name": "agentic-sdd-starter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Starter repo for Claude Code, SDD, hooks, MCP guardrails, and agentic development workflows.",
+  "scripts": {
+    "lint": "echo \"TODO: configure lint for your stack\"",
+    "typecheck": "echo \"TODO: configure typecheck for your stack\"",
+    "test": "echo \"TODO: configure tests for your stack\"",
+    "build": "echo \"TODO: configure build for your stack\"",
+    "verify": "./scripts/verify.sh",
+    "spec:new": "./scripts/new-spec.sh"
+  }
+}
