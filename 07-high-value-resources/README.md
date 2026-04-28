@@ -16,7 +16,7 @@ Metodología de desarrollo donde escribís **tests antes del código**. El ciclo
 2. **GREEN**: Escribir el código mínimo para que pase
 3. **REFACTOR**: Mejorar el código sin romper el test
 
-**Por qué importa con agentes:** Sin tests, el agente no tiene feedback sobre si su código funciona. El TDD le da un loop de validación automático.
+> **Por qué importa con agentes:** Sin tests, el agente no tiene feedback sobre si su código funciona. El TDD le da un loop de validación automático.
 
 **Lectura recomendada:** *Test Driven Development: By Example* — Kent Beck
 
@@ -25,7 +25,7 @@ Metodología de desarrollo donde escribís **tests antes del código**. El ciclo
 ### Domain-Driven Design (DDD)
 Enfoque de desarrollo que prioriza crear un **lenguaje compartido** entre desarrolladores y expertos del dominio. En lugar de decir "usuario", "cliente", "account holder" indistintamente, el equipo acuerda un solo término.
 
-**Por qué importa con agentes:** Un archivo `CONTEXT.md` con el lenguaje del proyecto hace que el agente sea más conciso y genere código con nombres consistentes. Puede reducir uso de tokens en 30-50%.
+> **Por qué importa con agentes:** Un archivo `CONTEXT.md` con el lenguaje del proyecto hace que el agente sea más conciso y genere código con nombres consistentes. Puede reducir uso de tokens en 30-50%.
 
 **Lectura recomendada:** *Domain-Driven Design* — Eric Evans
 
@@ -34,7 +34,7 @@ Enfoque de desarrollo que prioriza crear un **lenguaje compartido** entre desarr
 ### ADR (Architecture Decision Record)
 Documento que registra **decisiones técnicas importantes** y su contexto. Por ejemplo: "¿Por qué usamos Zod en lugar de Joi para validación?"
 
-**Por qué importa con agentes:** En lugar de explicar la misma decisión 20 veces, le decís al agente "lee ADR 003". Es tu memoria de largo plazo.
+> **Por qué importa con agentes:** En lugar de explicar la misma decisión 20 veces, le decís al agente "lee ADR 003". Es tu memoria de largo plazo.
 
 **Template recomendado:** [adr/madr](https://github.com/adr/madr)
 
@@ -42,6 +42,8 @@ Documento que registra **decisiones técnicas importantes** y su contexto. Por e
 
 ### Grilling Session
 Técnica donde, en lugar de darle instrucciones directas al agente, hacés que **te interrogue primero** sobre lo que realmente querés construir. Reduce desalineamiento.
+
+> **Por qué importa con agentes:** Nadie sabe exactamente lo que quiere hasta que lo articula. La grilling session te obliga a pensar antes de que el agente genere código que después tenés que tirar.
 
 **Ejemplo:**
 ```
