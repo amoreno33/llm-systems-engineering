@@ -14,9 +14,6 @@
 | **[06. Ops & Security](./06-llmops-security/README.md)** | Governance | Versionado de prompts, observabilidad, prompt injection y gobernanza de memoria. |
 | **[07. High-Value Resources](./07-high-value-resources/README.md)** | Resources | Papers, repositorios de referencia y herramientas con links verificados. |
 
-### [07. High-Value Resources](./07-high-value-resources/README.md)
-*   Papers, repositorios de referencia y herramientas con links verificados.
-
 ---
 
 ## 🚀 Filosofía de trabajo: de iteración informal a desarrollo guiado por especificaciones
