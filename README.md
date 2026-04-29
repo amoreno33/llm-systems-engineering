@@ -18,17 +18,18 @@
 
 ---
 
-## 🚀 Filosofía de Trabajo: De Vibe Coding a SDD
+## 🚀 Filosofía de trabajo: de iteración informal a desarrollo guiado por especificaciones
 
-### El problema: Vibe Coding no escala
+Al trabajar con LLMs, es común empezar con un enfoque iterativo: describir una tarea, obtener una respuesta, corregir y repetir. Este modelo funciona bien para exploración o prototipos, pero empieza a fallar en sistemas reales, donde se necesita control sobre el comportamiento, consistencia entre iteraciones y reproducibilidad en los resultados.
 
-El "vibe coding" es el modo por defecto cuando empezás con agentes: describís lo que querés, el agente genera, revisás el resultado, señalás lo que está mal, el agente lo intenta de nuevo. Funciona para prototipos rápidos. No funciona para sistemas reales.
+Cuando este enfoque se mantiene sin estructura, aparecen una serie de problemas acumulativos:
 
-Los problemas acumulados del vibe coding sin estructura:
-- **Sesiones sin memoria**: cada conversación empieza desde cero, el agente no sabe qué decidiste la semana pasada
-- **Código desechable**: el agente optimiza para el prompt actual, no para el sistema a largo plazo
-- **Deuda técnica acelerada**: un agente puede generar entropía más rápido que un humano (ver [Patrón 4: Ball of Mud](./04-agentic-systems/README.md))
-- **Drift de intención**: lo que pediste en el turno 1 ya no tiene coherencia con lo del turno 20
+- **Sesiones sin memoria**: cada interacción parte de contexto incompleto; el agente no tiene visibilidad de decisiones previas ni del estado del sistema.
+- **Código desechable**: las soluciones se optimizan para resolver el prompt actual, sin considerar coherencia ni mantenibilidad a largo plazo.
+- **Deuda técnica acelerada**: la iteración rápida sin estructura introduce inconsistencias y complejidad; un agente puede generar entropía más rápido que un equipo humano (ver patrón Ball of Mud).
+- **Drift de intención**: los objetivos iniciales se diluyen a lo largo de múltiples iteraciones, perdiendo alineación con el diseño original del sistema.
+
+Estos problemas no son fallas del modelo, sino del proceso. Sin una estructura explícita, el sistema depende de iteraciones locales sin una referencia global.
 
 ### La respuesta profesional: Specification Driven Development (SDD)
 
