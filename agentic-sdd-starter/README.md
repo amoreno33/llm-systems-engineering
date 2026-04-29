@@ -1,8 +1,20 @@
 # 🚀 Agentic SDD Starter (Specification Driven Development)
 
-Este repositorio no es un competidor de BMAD, es su **motor de ejecución técnica**. Mientras que BMAD orquesta el "quién" y el "cuándo" (visión estratégica), SDD orquesta el **"cómo" se escribe código verificable** que sigue las reglas del repo.
+El desarrollo se organiza alrededor de especificaciones explícitas.
 
-> **Principio Clave:** El agente no improvisa código. El agente ejecuta una especificación verificable contra reglas operativas rígidas.
+Cada especificación define el comportamiento esperado del sistema de forma concreta: qué debe hacer, bajo qué condiciones y con qué criterios de validación.
+
+Estas especificaciones no actúan como documentación pasiva. Son **artefactos operativos** que:
+
+- guían la implementación
+- restringen el espacio de soluciones
+- permiten validar resultados de forma consistente
+
+Los agentes no operan sobre prompts aislados ni contexto implícito. Ejecutan tareas definidas por especificaciones, dentro de un marco donde las reglas, supuestos y resultados esperados están previamente definidos.
+
+Esto elimina la dependencia de iteraciones ad hoc y reduce la ambigüedad en el proceso de desarrollo.
+
+> **Principio clave:** sin especificación, no hay implementación.
 
 
 ## Qué incluye
