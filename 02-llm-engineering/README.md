@@ -82,8 +82,19 @@ Identificado por investigadores de Stanford y Berkeley, este fenómeno demuestra
 *   **Recencia (End):** El modelo tiene muy fresco lo que se dice justo antes de empezar a generar.
 *   **El Abismo Central (Middle):** La información colocada en el centro del contexto tiende a ser ignorada o recuperada con mucha menor fidelidad.
 
-![Métricas de Lost in the Middle](./assets/lost_in_the_middle_clean.png)
-*Diagrama técnico: Relación entre la precisión de recuperación y la posición del dato en el prompt.*
+```
+Inicio del contexto      Centro del contexto      Final del contexto
+┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│ ✅ Alta atención │    │ ❌ Baja atención │    │ ✅ Alta atención │
+│ System prompt    │    │ Documentos RAG   │    │ Último mensaje   │
+│ Instrucciones    │    │ Logs, contexto   │    │ Few-shot examples│
+│ Reglas clave     │    │ largo o ruidoso  │    │ Query del usuario│
+└──────────────────┘    └──────────────────┘    └──────────────────┘
+         ▲                       │                        ▲
+         └───────────────────────┴────────────────────────┘
+              Curva en U: los extremos se recuerdan,
+              el centro se pierde (hasta un 40% menos de fidelidad)
+```
 
 ### Estrategias de Mitigación para Profesionales de IA:
 1.  **Priorización Estructural:** Coloca las reglas de negocio y las instrucciones de seguridad al **principio**. Coloca los ejemplos (Few-shot) al **final**, justo antes del trigger de respuesta.

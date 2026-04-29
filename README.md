@@ -1,9 +1,5 @@
 # 🧠 LLM Systems Engineering: Guía Práctica
 
-Una guía práctica para desarrolladores de IA que buscan iniciarse o reforzar conocimientos en el desarrollo de sistemas basados en LLMs.
-
-El contenido describe las distintas capas de ingeniería necesarias para construir sistemas con LLMs, incluyendo cómo funcionan los modelos, cómo se entrenan, cómo se ejecutan en inferencia, cómo se integran con retrieval y agentes, y cómo se evalúan y operan en producción.
-
 ---
 
 ## 🗺️ Mapa de Navegación

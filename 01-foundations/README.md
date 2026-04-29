@@ -106,7 +106,7 @@ El modelo no "sabe" nada. Predice el siguiente token más probable estadísticam
 ### Implicancias directas para vibe coding:
 1. **Si el agente inventa un endpoint, es porque tu contexto no tiene la información correcta.** La solución no es pedirle que "no invente", sino darle un `CLAUDE.md` con la lista real de endpoints.
 2. **Temperature baja reduce alucinaciones pero no las elimina.** La única mitigación real es RAG (darle la fuente de verdad) o verificación post-generación (tests, hooks).
-3. **Los modelos alucinan más sobre datos recientes** (post-training cutoff). Si tu stack usa una librería que se actualizó hace 2 meses, el modelo puede generar código para la versión anterior.
+3. **Los modelos alucinan más sobre datos recientes** (fecha de corte del conocimiento). Si tu stack usa una librería que se actualizó hace 2 meses, el modelo puede generar código para la versión anterior.
 
 ---
 [Volver al Inicio](../README.md)
