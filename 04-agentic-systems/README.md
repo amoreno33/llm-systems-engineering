@@ -258,19 +258,356 @@ Agente (paso REFACTOR):
 
 ---
 
-### 🪝 Hooks y Skills: Dónde vive cada concepto
+### 🪝 Hooks y Skills: Dónde Vive Cada Concepto
 
-Una fuente frecuente de confusión en sistemas agénticos es mezclar tres capas que son distintas:
+> **Principio:** el LLM no tiene hooks. El runtime sí. Los hooks viven en Claude Code, en tu propio framework, o en los guardrails de tu metodología — nunca dentro del modelo.
+>
+> *Fuente: [Claude Code — Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks), documentación oficial de Anthropic.*
 
-| Capa | Quién define los hooks | Ejemplo |
+**Las tres capas:**
+
+| Capa | Quién define los hooks | Dónde vive la lógica |
 | :--- | :--- | :--- |
-| **Claude Code / Editor** | `settings.json` → scripts en `.claude/hooks/` | Bloquear `rm -rf` antes de ejecutar |
-| **Framework Python propio** | `runtime.register_hook()` | Validar spec antes de implementar |
-| **BMAD / Spec Kit** | El editor/runtime subyacente ejecuta los hooks | BMAD define el rol; Claude Code ejecuta el control |
+| **Claude Code / Editor** | `settings.json` | Scripts en `.claude/hooks/` |
+| **Framework Python propio** | `runtime.register_hook()` | Función Python registrada en el runtime |
+| **BMAD / Spec Kit** | Metodología + workflows | El editor/runtime subyacente ejecuta los hooks reales |
 
-> **La regla central:** el LLM no tiene hooks. El runtime sí. Los hooks están en Claude Code, en tu framework, o en los guardrails de tu metodología — nunca dentro del modelo.
+---
 
-> 📖 **Ver guía completa:** [Hooks & Skills — Las 3 Capas](../agentic-sdd-starter/docs/hooks-skills-guide.md)
+#### Capa 1: Claude Code
+
+En Claude Code, los hooks se declaran en `settings.json` y la lógica vive en scripts separados. Son dos piezas con responsabilidades distintas:
+
+```
+.claude/
+├── settings.json          ← declara cuándo corre el hook
+└── hooks/
+    ├── block_dangerous.py ← lógica del hook
+    └── check_scope.py
+```
+
+**Eventos disponibles** *(según [documentación oficial de Claude Code](https://docs.anthropic.com/en/docs/claude-code/hooks))*:
+
+| Evento | Cuándo se ejecuta | Puede bloquear |
+| :--- | :--- | :--- |
+| `PreToolUse` | Antes de usar una tool | Sí |
+| `PostToolUse` | Después de usar una tool | No (agrega contexto) |
+| `UserPromptSubmit` | Cuando el usuario envía un prompt | Sí |
+| `Stop` | Cuando el agente termina su turno | No |
+
+Los **matchers** filtran por nombre de tool: `Bash`, `Edit`, `Write`, o cualquier tool MCP.
+
+**Ejemplo: bloquear comandos peligrosos**
+
+`.claude/settings.json`
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/block_dangerous_commands.py"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`.claude/hooks/block_dangerous_commands.py`
+```python
+#!/usr/bin/env python3
+
+import json
+import re
+import sys
+
+
+def deny(reason: str) -> None:
+    print(json.dumps({
+        "hookSpecificOutput": {
+            "hookEventName": "PreToolUse",
+            "permissionDecision": "deny",
+            "permissionDecisionReason": reason,
+        }
+    }))
+    sys.exit(0)
+
+
+def main() -> None:
+    payload = json.load(sys.stdin)
+
+    tool_name = payload.get("tool_name")
+    tool_input = payload.get("tool_input", {})
+    command = tool_input.get("command", "")
+
+    if tool_name != "Bash":
+        return
+
+    dangerous_patterns = [
+        r"\brm\s+-rf\b",
+        r"\bsudo\b",
+        r"\bchmod\s+-R\s+777\b",
+        r"\bgit\s+push\s+--force\b",
+        r"\bdrop\s+database\b",
+    ]
+
+    for pattern in dangerous_patterns:
+        if re.search(pattern, command, re.IGNORECASE):
+            deny(f"Comando bloqueado por política del proyecto: {command}")
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+El hook no vive en el modelo. Vive en el repo. Claude Code lo ejecuta cuando el agente intenta usar Bash.
+
+**Ejemplo: controlar el scope de cambios** (hook en evento `Stop`)
+
+`.claude/hooks/check_diff_size.py`
+```python
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+
+
+MAX_CHANGED_FILES = 6
+
+
+def changed_files() -> list[str]:
+    result = subprocess.run(
+        ["git", "diff", "--name-only"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def main() -> None:
+    files = changed_files()
+
+    if len(files) > MAX_CHANGED_FILES:
+        print(
+            f"El agente modificó {len(files)} archivos. "
+            f"Máximo permitido: {MAX_CHANGED_FILES}. "
+            "Revisar si el cambio sigue siendo quirúrgico.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+**Hooks y SDD: enforzar spec-first**
+
+El hook más directo para SDD no genera specs — las enforza antes de que el agente arranque a implementar:
+
+`.claude/hooks/require_spec_for_implementation.py`
+```python
+#!/usr/bin/env python3
+
+import json
+import sys
+from pathlib import Path
+
+
+IMPLEMENTATION_WORDS = [
+    "implementa", "implement", "codea",
+    "crea el endpoint", "fix", "arregla", "modifica",
+]
+
+
+def is_implementation_request(prompt: str) -> bool:
+    return any(word in prompt.lower() for word in IMPLEMENTATION_WORDS)
+
+
+def has_active_spec() -> bool:
+    specs_dir = Path("specs")
+    if not specs_dir.exists():
+        return False
+    return any(specs_dir.glob("*/spec.md")) or any(specs_dir.glob("*.md"))
+
+
+def main() -> None:
+    payload = json.load(sys.stdin)
+    prompt = payload.get("prompt", "")
+
+    if is_implementation_request(prompt) and not has_active_spec():
+        print(
+            "Antes de implementar, crear una spec en /specs. "
+            "Formato mínimo: contexto, objetivo, criterios de aceptación, edge cases y tests.",
+            file=sys.stderr,
+        )
+        sys.exit(2)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+**Los hooks son infraestructura del repo. Las specs son artefactos por feature.**
+
+```
+.claude/
+├── settings.json
+└── hooks/                               ← se definen una vez, viven siempre
+    ├── require_spec_for_implementation.py
+    ├── block_dangerous_commands.py
+    └── check_scope.py
+
+specs/
+└── email-validation/                    ← se crea por feature
+    ├── spec.md
+    ├── plan.md
+    └── tasks.md
+```
+
+---
+
+#### Capa 2: Framework Python propio
+
+Si construís tu propio agente, el hook system lo implementás vos. El patrón sigue el mismo principio que el interceptor/middleware: el runtime ejecuta callbacks registrados en puntos del ciclo de vida del agente.
+
+```
+user prompt
+     ↓
+before_prompt_hooks()
+     ↓
+LLM call
+     ↓
+tool call proposed
+     ↓
+pre_tool_hooks()          ← bloqueo o modificación posible acá
+     ↓
+execute tool
+     ↓
+post_tool_hooks()
+     ↓
+final response
+     ↓
+stop_hooks()
+```
+
+**Runtime mínimo:**
+
+```python
+from dataclasses import dataclass
+from typing import Callable, Any
+
+
+@dataclass
+class HookContext:
+    event: str
+    payload: dict[str, Any]
+
+
+Hook = Callable[[HookContext], None]
+
+
+class AgentRuntime:
+    def __init__(self) -> None:
+        self.hooks: dict[str, list[Hook]] = {}
+
+    def register_hook(self, event: str, hook: Hook) -> None:
+        self.hooks.setdefault(event, []).append(hook)
+
+    def run_hooks(self, event: str, payload: dict[str, Any]) -> None:
+        context = HookContext(event=event, payload=payload)
+        for hook in self.hooks.get(event, []):
+            hook(context)
+```
+
+**Hooks ilustrativos:**
+
+```python
+def require_spec(context: HookContext) -> None:
+    prompt = context.payload["prompt"].lower()
+    implementation_terms = ["implement", "fix", "modifica", "crea", "codea"]
+
+    if any(term in prompt for term in implementation_terms):
+        if "spec:" not in prompt:
+            raise RuntimeError(
+                "Solicitud de implementación sin spec. "
+                "Crear spec antes de pedir código."
+            )
+
+
+def block_large_scope(context: HookContext) -> None:
+    path = context.payload.get("args", {}).get("path", "")
+    if path.startswith("legacy/"):
+        raise RuntimeError(f"No se permite modificar legacy sin aprobación: {path}")
+```
+
+**Skills en un framework propio** son contexto seleccionable que se inyecta en el system prompt, no lógica de ejecución:
+
+```python
+from pathlib import Path
+
+
+def load_skills() -> str:
+    return "\n\n".join(
+        f"--- Skill: {p.name} ---\n{p.read_text()}"
+        for p in Path(".skills").glob("*.md")
+    )
+
+
+system_prompt = f"You are a coding agent.\n\n{load_skills()}"
+```
+
+---
+
+#### Capa 3: BMAD y Spec Kit
+
+**Spec Kit** es un workflow SDD que estructura el proceso con comandos (`/specify`, `/plan`, `/tasks`) y produce artefactos verificables. Los guardrails se agregan como hooks alrededor del workflow:
+
+```yaml
+# ejemplo pre-commit para Spec Kit
+pre-commit:
+  - validar que exista spec.md
+  - validar que exista plan.md
+  - bloquear cambios de código sin spec asociada
+```
+
+*Fuente: [github.com/github/spec-kit](https://github.com/github/spec-kit)*
+
+**BMAD** es una metodología que corre sobre Claude Code, Cursor o Codex CLI. Según su documentación, funciona con cualquier AI coding assistant que soporte custom system prompts o project context:
+
+```
+BMAD define:                  El editor/runtime define:
+├─ roles de agentes           ├─ hooks reales (.claude/settings.json)
+├─ workflows                  ├─ permisos de tools
+└─ prompts y artefactos       └─ integración con MCP
+```
+
+Si usás BMAD sobre Claude Code, los hooks siguen viviendo en `.claude/settings.json`. BMAD no reemplaza el hook system del editor.
+
+**Tabla resumen:**
+
+| Concepto | Dónde se declara | Dónde vive la lógica | Quién lo ejecuta |
+| :--- | :--- | :--- | :--- |
+| `PreToolUse` / `PostToolUse` | `settings.json` | `.claude/hooks/*.py` | Claude Code |
+| `UserPromptSubmit` / `Stop` | `settings.json` | `.claude/hooks/*.py` | Claude Code |
+| Hook en Python propio | `runtime.register_hook()` | Función Python | Tu `AgentRuntime` |
+| Skill (Claude Code) | `.claude/rules/*.md` / CLAUDE.md | Archivo Markdown | Modelo lo lee como contexto |
+| Skill (Python propio) | `.skills/*.md` | Archivo Markdown | Loader inyecta en system prompt |
+| Spec | `/specs/feature/spec.md` | Markdown por feature | Agente la ejecuta como contrato |
+| Workflow BMAD | Archivos BMAD | Agentes y prompts | Claude Code / Cursor / tu runtime |
+| Workflow Spec Kit | `/specify`, `/plan`, `/tasks` | Artefactos por feature | Claude Code con custom commands |
 
 ---
 
