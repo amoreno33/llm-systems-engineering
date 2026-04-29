@@ -11,8 +11,6 @@ El error más común es tratar el contexto como un bloque estático de texto. Un
 *   **L3 (Vector DB / RAG):** Documentación y base de conocimientos externa. El agente la consulta bajo demanda.
 *   **L4 (Long-term Memory):** Historial completo summarizado o persistido en Knowledge Graphs. Los artifacts de BMAD viven acá.
 
-![Jerarquía de Memoria de Contexto](./assets/context_hierarchy_clean.png)
-
 > **Ejemplo Práctico:** [Semantic Cache conceptual en Python](./examples/semantic_cache_example.py) — cómo evitar llamadas duplicadas al LLM.
 
 ## ⚡ Estrategias de Optimización
