@@ -131,274 +131,266 @@ Plantillas listas para usar en tus proyectos con agentes de IA. Copialas, adapt�
 #### CLAUDE.md / AGENTS.md — Template Básico
 
 ```markdown
-# Project Overview
+# Descripción del Proyecto
 
-## What This Project Does
+## Qué hace este proyecto
 [Descripción en 2-3 líneas del propósito del proyecto]
 
-## Tech Stack
-- Language: [e.g., TypeScript]
-- Framework: [e.g., Next.js 14]
-- Database: [e.g., PostgreSQL + Prisma]
-- Testing: [e.g., Vitest]
+## Stack Tecnológico
+- Lenguaje: [ej. TypeScript]
+- Framework: [ej. Next.js 14]
+- Base de datos: [ej. PostgreSQL + Prisma]
+- Testing: [ej. Vitest]
 
-## Domain Language
+## Lenguaje del Dominio
 
-**Terms you MUST use:**
-- User (NOT customer, client, or account)
-- Order (NOT purchase, transaction)
-- SKU (NOT product_id)
+**Términos que DEBÉS usar:**
+- Usuario (NO cliente, account, ni customer)
+- Pedido (NO compra, transacción)
+- SKU (NO product_id)
 
-**Terms you MUST NOT use:**
-- Legacy terms from old codebase
+**Términos que NO debés usar:**
+- Términos del codebase anterior
 
-## Architecture Decisions
+## Decisiones de Arquitectura
 
-1. **We use Prisma** — Do NOT suggest TypeORM or other ORMs
-2. **We use Zod for validation** — Do NOT suggest Joi or Yup
-3. **Tests are written in Vitest** — Do NOT use Jest
+1. **Usamos Prisma** — NO sugerir TypeORM ni otros ORMs
+2. **Usamos Zod para validación** — NO sugerir Joi ni Yup
+3. **Los tests están en Vitest** — NO usar Jest
 
-## Code Style
+## Estilo de Código
 
-- Prefer functional components over class components
-- Use explicit types, avoid `any`
-- Max function length: 50 lines. If longer, refactor.
+- Preferir componentes funcionales sobre clases
+- Usar tipos explícitos, evitar `any`
+- Máximo 50 líneas por función. Si es más largo, refactorizar.
 ```
 
-#### CLAUDE.md — Template Avanzado (con Superpowers workflow)
+#### CLAUDE.md — Template Avanzado
 
 ```markdown
-# Project Context
+# Contexto del Proyecto
 
-## Mission
+## Misión
 [1 línea: el problema que resuelve este proyecto]
 
-## Non-Negotiables (Invariants)
+## Reglas no negociables
 
-1. **TDD is mandatory**: RED → GREEN → REFACTOR. No code without a failing test first.
-2. **Complexity budget**: New files > 200 lines trigger a refactor discussion.
-3. **Domain Language**: See CONTEXT.md for terminology. Deviations break CI.
+1. **TDD obligatorio**: ROJO → VERDE → REFACTOR. Sin tests no hay código.
+2. **Presupuesto de complejidad**: Archivos nuevos > 200 líneas disparan una discusión de refactor.
+3. **Lenguaje del dominio**: Ver CONTEXT.md para terminología. Las desviaciones rompen el CI.
 
-## Workflow Phases
+## Fases del Workflow
 
-This project uses Superpowers methodology:
+1. `/brainstorm` — Refinamiento socrático antes de cualquier código
+2. `/plan` — Dividir el trabajo en tareas de 2-5 minutos
+3. `/implement` — Desarrollo con subagentes y revisión en dos etapas
+4. `/review` — Code review contra la spec antes de mergear
 
-1. `/brainstorm` — Socratic refinement before any code
-2. `/plan` — Break work into 2-5 minute tasks
-3. `/implement` — Subagent-driven development with two-stage review
-4. `/review` — Code review against spec before merge
+## Criterios de "Terminado"
 
-## Success Criteria for "Done"
-
-- [ ] All tests pass (including new tests for new features)
-- [ ] No TypeScript errors
-- [ ] Code reviewed and approved
-- [ ] CONTEXT.md updated if architecture changed
-- [ ] ADR created for any new tech decision
+- [ ] Todos los tests pasan (incluyendo los nuevos)
+- [ ] Sin errores de TypeScript
+- [ ] Code review aprobado
+- [ ] CONTEXT.md actualizado si cambió la arquitectura
+- [ ] ADR creado para cualquier nueva decisión técnica
 ```
 
-#### CONTEXT.md — Domain Language Template
+#### CONTEXT.md — Lenguaje del Dominio
 
 ```markdown
-# Domain Context
+# Contexto del Dominio
 
-## Ubiquitous Language
+## Lenguaje Ubicuo
 
-### Core Entities
+### Entidades Principales
 
-**User**
-- Definition: A person with an authenticated account in the system
-- Why this term: Aligns with auth provider terminology
-- Do NOT use: customer, client, account holder
+**Usuario**
+- Definición: Persona con cuenta autenticada en el sistema
+- Por qué este término: Alinea con la terminología del proveedor de auth
+- NO usar: cliente, customer, account holder
 
-**Order**
-- Definition: A purchase request submitted by a User
-- Lifecycle: draft → confirmed → fulfilled → delivered
-- Do NOT use: transaction, purchase, cart
+**Pedido**
+- Definición: Solicitud de compra enviada por un Usuario
+- Ciclo de vida: borrador → confirmado → procesado → entregado
+- NO usar: transacción, compra, carrito
 
 **SKU (Stock Keeping Unit)**
-- Definition: Unique identifier for a product variant
-- Format: `{CATEGORY}-{ID}` (e.g., "LAPTOP-001")
-- Do NOT use: product_id, item_code
+- Definición: Identificador único de una variante de producto
+- Formato: `{CATEGORIA}-{ID}` (ej. "LAPTOP-001")
+- NO usar: product_id, item_code
 
-## Architecture Constraints
+## Restricciones de Arquitectura
 
-### Database
-- ORM: Prisma (reason: type safety + migrations. See ADR-001)
-- No raw SQL queries without approval
+### Base de Datos
+- ORM: Prisma (razón: type safety + migraciones. Ver ADR-001)
+- Sin queries SQL crudas sin aprobación
 
-### Validation
-- Library: Zod (reason: runtime + compile-time validation. See ADR-002)
-- All API inputs MUST be validated at controller level
+### Validación
+- Librería: Zod (razón: validación en runtime y compile-time. Ver ADR-002)
+- Todos los inputs de la API DEBEN validarse a nivel de controlador
 
 ### Testing
-- Framework: Vitest (reason: faster than Jest. See ADR-003)
-- Coverage target: 80% for core business logic
+- Framework: Vitest (razón: más rápido que Jest. Ver ADR-003)
+- Cobertura objetivo: 80% para lógica de negocio core
 
-## Decision History
+## Historial de Decisiones
 
-For "why" questions, see `/docs/adr/` (Architecture Decision Records)
+Para preguntas de "por qué", ver `/docs/adr/` (Architecture Decision Records)
 ```
 
 ---
 
 ### 2. Workflow Templates
 
-#### TDD Workflow (Superpowers + Matt Pocock Style)
+#### TDD Workflow
 
 ```markdown
-# TDD Implementation Checklist
+# Checklist de Implementación TDD
 
-## Phase 1: RED (Write Failing Test)
+## Fase 1: ROJO (Escribir test que falla)
 
-1. Describe the behavior you want:
-   "When user submits invalid email, return 400 with error message"
+1. Describí el comportamiento que querés:
+   "Cuando el usuario envía un email inválido, devolver 400 con mensaje de error"
 
-2. Write the test FIRST:
+2. Escribí el test PRIMERO:
 ```typescript
-test('should reject invalid email format', () => {
-  const result = validateEmail('not-an-email');
+test('debería rechazar formato de email inválido', () => {
+  const result = validateEmail('no-es-un-email');
   expect(result.success).toBe(false);
-  expect(result.error).toContain('Invalid email format');
+  expect(result.error).toContain('Formato de email inválido');
 });
 ```
 
-3. Run the test → Should FAIL (because validateEmail doesn't exist yet)
+3. Ejecutá el test → Debe FALLAR (porque validateEmail todavía no existe)
 
-## Phase 2: GREEN (Make It Pass)
+## Fase 2: VERDE (Hacerlo pasar)
 
-4. Write minimal code to make test pass:
+4. Escribí el código mínimo para que el test pase:
 ```typescript
 function validateEmail(email: string) {
   if (!email.includes('@')) {
-    return { success: false, error: 'Invalid email format' };
+    return { success: false, error: 'Formato de email inválido' };
   }
   return { success: true };
 }
 ```
 
-5. Run test again → Should PASS
+5. Ejecutá el test de nuevo → Debe PASAR
 
-## Phase 3: REFACTOR (Improve Without Breaking)
+## Fase 3: REFACTOR (Mejorar sin romper)
 
-6. Improve the code quality:
+6. Mejorá la calidad del código:
 ```typescript
 function validateEmail(email: string): ValidationResult {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   if (!emailRegex.test(email)) {
-    return { success: false, error: 'Invalid email format' };
+    return { success: false, error: 'Formato de email inválido' };
   }
   
   return { success: true };
 }
 ```
 
-7. Run test again → Should STILL PASS
+7. Ejecutá el test de nuevo → Debe SEGUIR PASANDO
 
 ## Commit
 
-8. Commit with descriptive message:
+8. Commit con mensaje descriptivo:
    `feat: add email validation with regex pattern`
 ```
 
-#### Spec-First Workflow (Spec-Kit 6-Step)
+#### Workflow Spec-First (6 Pasos)
 
 ```markdown
-# Feature Development Workflow
+# Workflow de Desarrollo de Features
 
-## Step 1: Constitution
+## Paso 1: Constitución
 ```bash
 /speckit.constitution
 ```
-Define project principles (only once per project)
+Definí los principios del proyecto (solo una vez por proyecto)
 
-## Step 2: Specify (What)
+## Paso 2: Especificar (Qué)
 ```bash
 /speckit.specify
 ```
-**What to include:**
-- User story: "As a [role], I want [feature] so that [benefit]"
-- Acceptance criteria (testable)
-- Edge cases to handle
-- What's explicitly OUT of scope
+- Historia de usuario: "Como [rol], quiero [feature] para [beneficio]"
+- Criterios de aceptación (testeables)
+- Casos borde a manejar
+- Qué está explícitamente FUERA del alcance
 
-**Do NOT include:**
-- Tech stack choices
-- Implementation details
-- File names or folder structure
-
-## Step 3: Plan (How)
+## Paso 3: Planificar (Cómo)
 ```bash
 /speckit.plan
 ```
-**Now you can be technical:**
-- Tech stack (e.g., "Use Zod for validation")
-- Architecture approach (e.g., "3-layer: controller → service → repository")
-- File structure
-- Dependencies to add
+**Acá sí puede ser técnico:**
+- Stack (ej. "Usar Zod para validación")
+- Enfoque de arquitectura (ej. "3 capas: controller → service → repository")
+- Estructura de archivos
+- Dependencias a agregar
 
-## Step 4: Tasks (Breakdown)
+## Paso 4: Tareas (Desglose)
 ```bash
 /speckit.tasks
 ```
-Break plan into 2-5 minute tasks. Each task should:
-- Have exact file path
-- Be independently testable
-- Have clear "done" criteria
+Desglosá el plan en tareas de 2-5 minutos. Cada tarea debe:
+- Tener el path exacto del archivo
+- Ser testeable de forma independiente
+- Tener un criterio claro de "terminado"
 
-## Step 5: Implement
+## Paso 5: Implementar
 ```bash
 /speckit.implement
 ```
-Agent executes tasks. Human reviews after each batch.
+El agente ejecuta las tareas. El humano revisa después de cada batch.
 
-## Step 6: Analyze
+## Paso 6: Analizar
 ```bash
 /speckit.analyze
 ```
-Cross-check spec vs. implementation for drift.
+Verificación cruzada entre spec e implementación para detectar desvíos.
 ```
 
-#### Grilling Session Template (Matt Pocock Style)
+#### Template de Sesión de Interrogación
 
 ```markdown
-# Grilling Session Template
+# Template de Sesión de Interrogación
 
-## Your Initial Request
-"I need to build [vague feature description]"
+## Tu solicitud inicial
+"Necesito construir [descripción vaga de una feature]"
 
-## Agent's Response (Example)
+## Respuesta del Agente (Ejemplo)
 
-**Before we start coding, let me understand what you really need:**
+**Antes de empezar a codear, necesito entender qué necesitás realmente:**
 
-### User Experience
-1. Who is the end user? (role, technical level)
-2. What's their primary goal with this feature?
-3. What happens if this feature is unavailable?
+### Experiencia del Usuario
+1. ¿Quién es el usuario final? (rol, nivel técnico)
+2. ¿Cuál es su objetivo principal con esta feature?
+3. ¿Qué pasa si esta feature no está disponible?
 
-### Functionality
-4. What's the happy path? (step by step)
-5. What are the 3 most common error scenarios?
-6. Does this need to work offline?
+### Funcionalidad
+4. ¿Cuál es el happy path? (paso a paso)
+5. ¿Cuáles son los 3 escenarios de error más comunes?
+6. ¿Esto necesita funcionar offline?
 
-### Constraints
-7. Performance requirements? (response time, throughput)
-8. Security concerns? (auth, data sensitivity)
-9. Compliance requirements? (GDPR, HIPAA, etc.)
+### Restricciones
+7. ¿Requisitos de performance? (tiempo de respuesta, throughput)
+8. ¿Preocupaciones de seguridad? (auth, sensibilidad de datos)
+9. ¿Requisitos de compliance? (GDPR, HIPAA, etc.)
 
-### Integration
-10. What existing systems does this interact with?
-11. What data format do they expect?
-12. What happens if those systems are down?
+### Integración
+10. ¿Con qué sistemas existentes interactúa?
+11. ¿Qué formato de datos esperan?
+12. ¿Qué pasa si esos sistemas están caídos?
 
-### Success Metrics
-13. How will you know this feature is successful?
-14. What metrics will you track?
+### Métricas de Éxito
+13. ¿Cómo vas a saber que esta feature fue exitosa?
+14. ¿Qué métricas vas a trackear?
 
 ---
 
-**After answering these, we'll create a spec together.**
+**Después de responder estas preguntas, creamos la spec juntos.**
 ```
 
 ---
@@ -408,203 +400,203 @@ Cross-check spec vs. implementation for drift.
 #### ADR (Architecture Decision Record)
 
 ```markdown
-# ADR-003: Choose Vitest over Jest for Testing
+# ADR-003: Elegir Vitest en lugar de Jest para Testing
 
-**Status:** Accepted  
-**Date:** 2024-03-15  
-**Decision Makers:** @yourname, @teammate
+**Estado:** Aceptado  
+**Fecha:** 2024-03-15  
+**Decisores:** @tu-usuario, @compañero
 
-## Context
+## Contexto
 
-We need a testing framework for our TypeScript codebase. Key requirements:
-- Fast test execution (we have 500+ tests)
-- Good TypeScript support
-- Compatible with Vite (our build tool)
+Necesitamos un framework de testing para nuestra base de código TypeScript. Requisitos clave:
+- Ejecución rápida de tests (tenemos 500+ tests)
+- Buen soporte para TypeScript
+- Compatible con Vite (nuestra herramienta de build)
 
-## Decision
+## Decisión
 
-We will use **Vitest** as our primary testing framework.
+Vamos a usar **Vitest** como framework principal de testing.
 
-## Rationale
+## Justificación
 
-### Why Vitest?
-1. **Speed**: 2-3x faster than Jest in our benchmarks (200ms vs 600ms for full suite)
-2. **Native ESM**: No configuration hacks needed
-3. **Vite Integration**: Reuses our Vite config, no duplication
-4. **API Compatibility**: Drop-in replacement for Jest (minimal migration cost)
+### ¿Por qué Vitest?
+1. **Velocidad**: 2-3x más rápido que Jest en nuestros benchmarks (200ms vs 600ms para el suite completo)
+2. **ESM nativo**: Sin hacks de configuración
+3. **Integración con Vite**: Reutiliza nuestra config de Vite, sin duplicación
+4. **Compatibilidad de API**: Reemplazo directo de Jest (costo mínimo de migración)
 
-### Why NOT Jest?
-1. Requires extra config for ESM modules
-2. Slower test execution
-3. Separate config from build tool
+### ¿Por qué NO Jest?
+1. Requiere configuración extra para módulos ESM
+2. Ejecución de tests más lenta
+3. Config separada de la herramienta de build
 
-### Alternatives Considered
+### Alternativas consideradas
 
-**Node's built-in test runner**
-- ❌ Too basic, no snapshot testing
-- ❌ Limited assertion library
+**Test runner nativo de Node**
+- ❌ Demasiado básico, sin snapshot testing
+- ❌ Librería de assertions limitada
 
 **uvu**
-- ❌ Less mature ecosystem
-- ❌ Smaller community
+- ❌ Ecosistema menos maduro
+- ❌ Comunidad más pequeña
 
-## Consequences
+## Consecuencias
 
-### Positive
-- Faster CI/CD pipelines
-- Better developer experience (faster feedback loop)
-- Single config for build + test
+### Positivas
+- Pipelines de CI/CD más rápidos
+- Mejor experiencia del desarrollador (feedback loop más rápido)
+- Una sola config para build + test
 
-### Negative
-- Smaller community than Jest (but growing)
-- Some Jest plugins not compatible (mitigated: we don't use obscure plugins)
+### Negativas
+- Comunidad más pequeña que Jest (pero en crecimiento)
+- Algunos plugins de Jest no son compatibles (mitigado: no usamos plugins poco comunes)
 
-### Neutral
-- Migration effort: 2 hours to update syntax in existing tests
+### Neutrales
+- Esfuerzo de migración: 2 horas para actualizar la sintaxis en los tests existentes
 
-## Review Date
+## Fecha de Revisión
 
-2024-09-15 (6 months) — Re-evaluate if we hit any significant limitations
+2024-09-15 (6 meses) — Re-evaluar si encontramos limitaciones significativas
 ```
 
-#### Feature Spec Template (Spec-Kit Format)
+#### Template de Feature Spec
 
 ```markdown
-# Feature: Email Validation on User Registration
+# Feature: Validación de Email en el Registro de Usuarios
 
-## User Story
+## Historia de Usuario
 
-As a **product manager**, I want **to validate email addresses during registration** so that **we reduce fake accounts and improve deliverability**.
+Como **product manager**, quiero **validar direcciones de email durante el registro** para **reducir cuentas falsas y mejorar la entregabilidad**.
 
-## Acceptance Criteria
+## Criterios de Aceptación
 
 ### Happy Path
-1. ✅ User enters valid email (e.g., `test@example.com`)
-2. ✅ System validates format using regex
-3. ✅ System proceeds to next registration step
+1. ✅ El usuario ingresa un email válido (ej. `test@example.com`)
+2. ✅ El sistema valida el formato usando regex
+3. ✅ El sistema avanza al siguiente paso del registro
 
-### Error Scenarios
-1. ❌ User enters email without @ symbol → Show error: "Email must contain @"
-2. ❌ User enters email without domain → Show error: "Email must include domain (e.g., @example.com)"
-3. ❌ User enters email with spaces → Show error: "Email cannot contain spaces"
+### Escenarios de Error
+1. ❌ El usuario ingresa un email sin @ → Mostrar error: "El email debe contener @"
+2. ❌ El usuario ingresa un email sin dominio → Mostrar error: "El email debe incluir dominio (ej. @example.com)"
+3. ❌ El usuario ingresa un email con espacios → Mostrar error: "El email no puede contener espacios"
 
-## Out of Scope
+## Fuera del Alcance
 
-- ❌ Email verification (sending codes) — separate feature
-- ❌ Checking if email is disposable (e.g., tempmail.com)
-- ❌ Checking if email exists (DNS/SMTP validation)
+- ❌ Verificación de email (envío de códigos) — feature separada
+- ❌ Chequeo de emails desechables (ej. tempmail.com)
+- ❌ Verificación de existencia del email (validación DNS/SMTP)
 
-## Dependencies
+## Dependencias
 
-- None (pure validation logic)
+- Ninguna (lógica de validación pura)
 
-## Security Considerations
+## Consideraciones de Seguridad
 
-- No PII logging (email addresses are sensitive)
-- Rate limiting handled at API gateway level (not in this feature)
+- Sin logging de PII (las direcciones de email son datos sensibles)
+- Rate limiting manejado a nivel de API gateway (no en esta feature)
 
-## Metrics
+## Métricas
 
-- **Success**: Reduction in bounced welcome emails by 20%
-- **Monitor**: Validation rejection rate (baseline: unknown)
+- **Éxito**: Reducción en emails de bienvenida rebotados en un 20%
+- **Monitorear**: Tasa de rechazo de validación (baseline: desconocido)
 ```
 
-#### Implementation Plan Template
+#### Template de Plan de Implementación
 
 ```markdown
-# Implementation Plan: Email Validation
+# Plan de Implementación: Validación de Email
 
-## Tech Stack Decisions
+## Decisiones de Stack
 
-- **Validation Library**: Zod (reason: already used in other endpoints, ADR-002)
-- **Regex Pattern**: Standard email regex (no exotic TLDs needed)
-- **Error Handling**: Return validation errors in standard format (`{ field, message }`)
+- **Librería de Validación**: Zod (razón: ya se usa en otros endpoints, ADR-002)
+- **Patrón Regex**: Regex estándar para email (no se necesitan TLDs exóticos)
+- **Manejo de Errores**: Devolver errores de validación en formato estándar (`{ field, message }`)
 
-## File Structure
+## Estructura de Archivos
 
 ```
 src/
   validators/
-    email.validator.ts      # Core validation logic
+    email.validator.ts      # Lógica de validación principal
     email.validator.test.ts # Unit tests
   api/
     auth/
-      register.controller.ts # Calls email validator
+      register.controller.ts # Llama al email validator
 ```
 
-## Task Breakdown
+## Desglose de Tareas
 
-### Task 1: Create Email Validator (5 min)
-- **File**: `src/validators/email.validator.ts`
-- **Code**: Zod schema with email validation
-- **Test**: Write failing test first (TDD)
+### Tarea 1: Crear Email Validator (5 min)
+- **Archivo**: `src/validators/email.validator.ts`
+- **Código**: Schema de Zod con validación de email
+- **Test**: Escribir test que falla primero (TDD)
 
-### Task 2: Write Tests (8 min)
-- **File**: `src/validators/email.validator.test.ts`
-- **Cases**: Happy path + 3 error scenarios from spec
-- **Coverage**: 100% of validator logic
+### Tarea 2: Escribir Tests (8 min)
+- **Archivo**: `src/validators/email.validator.test.ts`
+- **Casos**: Happy path + 3 escenarios de error de la spec
+- **Cobertura**: 100% de la lógica del validator
 
-### Task 3: Integrate with Registration Endpoint (5 min)
-- **File**: `src/api/auth/register.controller.ts`
-- **Change**: Add `.email()` validation before processing
-- **Test**: E2E test for registration flow
+### Tarea 3: Integrar con el Endpoint de Registro (5 min)
+- **Archivo**: `src/api/auth/register.controller.ts`
+- **Cambio**: Agregar validación `.email()` antes de procesar
+- **Test**: Test E2E para el flujo de registro
 
-### Task 4: Update Error Messages (3 min)
-- **File**: `src/api/auth/register.controller.ts`
-- **Change**: Map Zod errors to user-friendly messages
-- **Test**: Verify error response format
+### Tarea 4: Actualizar Mensajes de Error (3 min)
+- **Archivo**: `src/api/auth/register.controller.ts`
+- **Cambio**: Mapear errores de Zod a mensajes amigables para el usuario
+- **Test**: Verificar formato de la respuesta de error
 
-## Verification Steps
+## Pasos de Verificación
 
-- [ ] All unit tests pass
-- [ ] E2E tests pass
-- [ ] Manual testing in dev environment
-- [ ] Code review approved
-- [ ] Spec updated if any changes during implementation
+- [ ] Todos los unit tests pasan
+- [ ] Tests E2E pasan
+- [ ] Testing manual en entorno de dev
+- [ ] Code review aprobado
+- [ ] Spec actualizada si hubo cambios durante la implementación
 ```
 
 ---
 
-### 4. Skills Template (Superpowers Style)
+### 4. Template de Skill Personalizado
 
 Si querés crear tus propios skills personalizados:
 
 ```markdown
-# Custom Skill: API Contract First
+# Skill Personalizado: API Contract First
 
-## Purpose
+## Propósito
 
-Enforce API-first design: define OpenAPI spec before writing any endpoint code.
+Forzar el diseño API-first: definir la spec OpenAPI antes de escribir cualquier código de endpoint.
 
-## Trigger Conditions
+## Condiciones de Activación
 
-- User mentions "new API endpoint"
-- User mentions "REST API"
-- File path contains `/api/`
+- El usuario menciona "nuevo endpoint de API"
+- El usuario menciona "REST API"
+- El path del archivo contiene `/api/`
 
 ## Workflow
 
-1. **Ask for Contract**: "Before we code, let's define the OpenAPI spec for this endpoint."
-2. **Generate Spec**: Create YAML with:
-   - Path + HTTP method
-   - Request body schema
-   - Response schemas (success + errors)
-   - Authentication requirements
-3. **Get Approval**: Show spec to user, iterate until approved
-4. **Generate Code**: Use spec as source of truth for types + validation
-5. **Generate Tests**: Use spec examples as test cases
+1. **Pedir el Contrato**: "Antes de codear, definamos la spec OpenAPI para este endpoint."
+2. **Generar la Spec**: Crear YAML con:
+   - Path + método HTTP
+   - Schema del body del request
+   - Schemas de respuesta (éxito + errores)
+   - Requisitos de autenticación
+3. **Obtener Aprobación**: Mostrar la spec al usuario, iterar hasta aprobar
+4. **Generar Código**: Usar la spec como fuente de verdad para types + validación
+5. **Generar Tests**: Usar los ejemplos de la spec como casos de test
 
-## Success Criteria
+## Criterios de "Terminado"
 
-- [ ] OpenAPI spec exists before code
-- [ ] Code types match spec (no drift)
-- [ ] Tests cover all response codes in spec
+- [ ] La spec OpenAPI existe antes del código
+- [ ] Los types del código coinciden con la spec (sin drift)
+- [ ] Los tests cubren todos los códigos de respuesta en la spec
 
-## Anti-Patterns to Avoid
+## Anti-Patrones a Evitar
 
-- ❌ Writing code first, spec later ("documentation debt")
-- ❌ Spec and code out of sync
-- ❌ Spec with no examples (not testable)
+- ❌ Escribir código primero, spec después ("deuda de documentación")
+- ❌ Spec y código desincronizados
+- ❌ Spec sin ejemplos (no testeable)
 ```
 
 ---
