@@ -43,8 +43,6 @@ Obligamos al agente a trabajar sobre un artefacto determinístico:
 3.  **Verificación:** El humano valida la `spec` antes de que el agente ejecute.
 4.  **Ejecución:** El agente implementa basándose *estrictamente* en la `spec`.
 
-> **Dato con respaldo:** El paper *"Chain of Specification: Enhancing LLM Reasoning"* (2024) demuestra que separar el diseño de la implementación mediante una especificación intermedia reduce errores de lógica en un **38%** vs. prompting directo.
-
 **Specs ejecutables vs. verificables:**
 - **Verificables** (tradicional): La spec es un documento que valida el código después de escrito.
 - **Ejecutables** (moderno, ej: Spec-Kit): La spec **genera** el código directamente. El workflow es: `constitution → specify → plan → tasks → implement → analyze`. La spec es el input del runtime, no solo documentación.
@@ -181,7 +179,7 @@ Inspirado en **Domain-Driven Design** de Eric Evans, la idea es crear un vocabul
 **Resultado:**
 El agente lee este archivo al inicio de cada sesión y adopta tu lenguaje. Ahora dice "crear el SKU" en lugar de "generar el identificador único del producto en la base de datos".
 
-> **Tip memorable:** Un CONTEXT.md bien hecho puede reducir el uso de tokens en un 30-50% y hace que el código generado use nombres consistentes. Es como darle al agente el "manual de estilo" de tu proyecto.
+> **Tip memorable:** Un CONTEXT.md bien hecho hace que el código generado use nombres consistentes y el agente tarde menos en ubicarse en el proyecto. Es como darle al agente el "manual de estilo" del proyecto.
 
 **Herramientas que lo implementan:**
 - **Matt Pocock Skills**: `/grill-with-docs` actualiza `CONTEXT.md` mientras trabajás
@@ -614,7 +612,7 @@ Si usás BMAD sobre Claude Code, los hooks siguen viviendo en `.claude/settings.
 ### 4️⃣ "Construimos Una Bola de Barro (Ball of Mud)"
 
 **El Problema:**
-El agente genera código rápido, pero con el tiempo el proyecto se vuelve un caos: código duplicado, funciones gigantes, módulos acoplados. Porque el agente puede codear 10x más rápido, también puede generar **entropía** 10x más rápido.
+El agente genera código rápido, pero con el tiempo el proyecto se vuelve un caos: código duplicado, funciones gigantes, módulos acoplados. A velocidad de agente se puede generar **entropía** a velocidad de agente.
 
 > **Esto pasa con BMAD, con Spec-Kit, y con cualquier framework.** Ninguna metodología te salva automáticamente del caos si no invertís en diseño todos los días.
 

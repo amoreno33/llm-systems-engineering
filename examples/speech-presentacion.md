@@ -333,7 +333,7 @@
 
 *¿Qué significa eso? Que cuando le pedís a un agente que haga algo, el valor no está en el mensaje que le mandaste. El valor está en **el contexto que ya tenía** cuando ejecutó. El CLAUDE.md que le dijiste qué no hacer. El CONTEXT.md con el lenguaje del proyecto. Los tests que definían qué era 'correcto'.*
 
-*Esto es lo que llamamos Specification Driven Development. No es nuevo — es ingeniería de software de los 90 aplicada a IA. Y hay datos que respaldan esto: separar el diseño de la implementación reduce errores de lógica en un 38% según investigación de 2024. No es magia. Es proceso."*
+*Esto es lo que llamamos Specification Driven Development. No es nuevo — es ingeniería de software aplicada a IA. Separar el diseño de la implementación no es magia. Es proceso."*
 
 ---
 

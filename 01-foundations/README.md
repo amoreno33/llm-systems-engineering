@@ -6,7 +6,7 @@ No es necesario saber entrenar un Transformer. Pero sí entender las 4 cosas que
 
 Los modelos no leen palabras, leen **tokens** (fragmentos de caracteres). Todo el pricing, los límites y la performance se miden en tokens.
 
-Dato clave que pocos saben:
+Dato importante:
 > **El español es ~30% más caro que el inglés.** La palabra "autenticación" puede ser 1 token en inglés ("authentication") pero 3-4 tokens en español. Esto significa que tu ventana de contexto se llena más rápido y pagás más por la misma información.
 
 Verificalo vos mismo: [OpenAI Tokenizer](https://platform.openai.com/tokenizer)
@@ -49,7 +49,7 @@ No siempre el modelo más grande es el mejor. La regla es simple:
 
 ## 🔀 Model Routing: No uses un Ferrari para ir al kiosco
 
-La tendencia más fuerte de 2025 es el **Model Routing** — una capa intermedia que decide automáticamente qué modelo debe responder cada request según la complejidad de la tarea.
+**Model Routing** es un patrón que ganó adopción en 2025-2026 — una capa intermedia que decide qué modelo debe responder cada request según la complejidad de la tarea.
 
 ### ¿Por qué importa?
 Usar Claude 3.5 Sonnet ($3/M tokens) para clasificar si un email es spam es como usar un Ferrari para ir a 2 cuadras. El resultado es el mismo con GPT-4o Mini ($0.15/M tokens) → **20 veces más barato**.
@@ -93,9 +93,6 @@ Intentás primero con el modelo barato. Si la respuesta no pasa un quality gate 
 | **[OpenRouter](https://openrouter.ai/)** | SaaS marketplace | Acceso a cientos de modelos con una sola API key. Ideal para prototipar. |
 | **[Portkey](https://portkey.ai/)** | SaaS gateway | Observabilidad avanzada + routing + guardrails. |
 | **Cloudflare AI Gateway** | Edge gateway | Routing dinámico integrado en la CDN de Cloudflare. |
-
-### El dato killer:
-> Equipos que implementan model routing reportan **reducciones de 40-70% en costos de API** sin pérdida medible de calidad en las respuestas. La clave es que el 60-80% de las tareas de una aplicación típica NO necesitan el modelo más caro.
 
 ### Conexión con vibe coding:
 Cuando usás Cursor o Claude Code, **ya estás usando routing sin darte cuenta**. Cursor usa modelos diferentes para autocompletado (rápido/barato) vs. chat (potente/caro). Entender esto te ayuda a elegir cuándo pedir algo vía tab-completion vs. cuándo abrir el chat para una tarea compleja.

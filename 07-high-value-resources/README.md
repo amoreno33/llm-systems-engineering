@@ -1,6 +1,6 @@
 # 📚 High-Value Resources for AI Engineers
 
-Esta es una lista curada de recursos para desarrolladores que trabajan con sistemas de IA. Se actualiza constantemente con herramientas, metodologías y referencias fundamentales.
+Lista de referencia de herramientas, frameworks y recursos con links verificados.
 
 ---
 
@@ -25,7 +25,7 @@ Metodología de desarrollo donde escribís **tests antes del código**. El ciclo
 ### Domain-Driven Design (DDD)
 Enfoque de desarrollo que prioriza crear un **lenguaje compartido** entre desarrolladores y expertos del dominio. En lugar de decir "usuario", "cliente", "account holder" indistintamente, el equipo acuerda un solo término.
 
-> **Por qué importa con agentes:** Un archivo `CONTEXT.md` con el lenguaje del proyecto hace que el agente sea más conciso y genere código con nombres consistentes. Puede reducir uso de tokens en 30-50%.
+> **Por qué importa con agentes:** Un archivo `CONTEXT.md` con el lenguaje del proyecto hace que el agente genere código con nombres consistentes y reduzca ambigüedades.
 
 **Lectura recomendada:** *Domain-Driven Design* — Eric Evans
 
@@ -58,11 +58,11 @@ Técnica donde, en lugar de darle instrucciones directas al agente, hacés que *
 
 ## 🌟 Repositorios de Referencia
 *   **[LangGraph Garden](https://github.com/langchain-ai/langgraph):** Ejemplos avanzados de arquitecturas de agentes cíclicos.
-*   **[Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook):** Las mejores prácticas para exprimir al máximo a la familia Claude.
-*   **[OpenAI Cookbook](https://github.com/openai/openai-cookbook):** Guías exhaustivas para GPT-4o y o1.
+*   **[Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook):** Ejemplos y mejores prácticas para la API de Claude.
+*   **[OpenAI Cookbook](https://github.com/openai/openai-cookbook):** Ejemplos y guías para GPT-4o y o1.
 *   **[Microsoft GraphRAG](https://github.com/microsoft/graphrag):** Repositorio oficial para implementar RAG basado en grafos.
-*   **[Promptfoo](https://github.com/promptfoo/promptfoo):** Herramienta esencial para testeo y evaluación de prompts.
-*   **[Matt Pocock Skills](https://github.com/mattpocock/skills):** 34k+ stars. Skills modulares para ingeniería disciplinada con agentes de IA.
+*   **[Promptfoo](https://github.com/promptfoo/promptfoo):** Testing y evaluación de prompts.
+*   **[Matt Pocock Skills](https://github.com/mattpocock/skills):** Skills modulares para ingeniería con agentes de IA.
 
 ## 🤖 Frameworks y Metodologías para Agentes
 
@@ -71,8 +71,6 @@ Técnica donde, en lugar de darle instrucciones directas al agente, hacés que *
 *   **[SDD Starter](../agentic-sdd-starter/):** Specification-Driven Development. Incluido en este repo con templates de `CLAUDE.md` y `CONTEXT.md`.
 
 ## 📰 Newsletters & Blogs Técnicos
-
-Mantenerse actualizado sin ruido:
 
 *   **[The Batch (DeepLearning.AI)](https://www.deeplearning.ai/the-batch/):** Newsletter semanal de Andrew Ng. Resume los avances más importantes en IA de forma accesible. **Gratis.**
 *   **[Lilian Weng's Blog](https://lilianweng.github.io/posts/):** Análisis técnicos profundos de arquitecturas de IA (LLM Agents, RLHF, prompting). Escrito por VP of Research en OpenAI.

@@ -1,6 +1,6 @@
 # 🔍 Advanced RAG: Beyond the Basics
 
-El RAG (Retrieval-Augmented Generation) es la columna vertebral de la mayoría de aplicaciones de IA empresarial. Sin embargo, el "Naive RAG" (vector search directo) suele fallar en producción por falta de precisión o contexto irrelevante.
+El RAG (Retrieval-Augmented Generation) es el patrón más común para conectar LLMs con datos privados o actualizados. Sin embargo, el "Naive RAG" (vector search directo) suele dar resultados imprecisos porque pierde contexto en el proceso de chunking.
 
 > **Conexión con vibe coding:** Cuando usás Cursor o Copilot con tu codebase, ya están aplicando RAG internamente: indexan tus archivos, buscan los fragmentos más relevantes y solo los pasan al modelo. Si el agente "no entiende" tu proyecto, no es un problema del modelo — es un problema de RAG.
 
@@ -63,7 +63,7 @@ El tamaño de chunk es una de las decisiones más impactantes y menos documentad
 
 - **Chunks muy pequeños (<200 tokens):** Alta precisión de búsqueda, pero el modelo recibe fragmentos sin contexto suficiente.
 - **Chunks muy grandes (>1000 tokens):** El modelo tiene contexto pero la búsqueda se vuelve imprecisa (mucho ruido).
-- **Sweet spot comprobado: 300-500 tokens con 10-15% de overlap** entre chunks consecutivos para no perder continuidad.
+- **Sweet spot de referencia: 300-500 tokens con 10-15% de overlap** entre chunks consecutivos para no perder continuidad.
 
 ```
 Documento largo

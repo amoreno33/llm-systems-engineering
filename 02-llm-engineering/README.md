@@ -1,6 +1,6 @@
 # 🛠️ LLM Engineering: Building the Intelligence Layer
 
-La ingeniería de LLMs va más allá de escribir prompts bonitos. Se trata de diseñar sistemas determinísticos sobre un motor probabilístico.
+Diseñar sistemas con LLMs implica trabajar con un motor probabilístico de forma predecible y controlada.
 
 ## 📝 Prompt Engineering Avanzado
 
@@ -9,7 +9,7 @@ Inducir al modelo a razonar antes de responder.
 > "Razona paso a paso antes de dar el resultado final. Identifica posibles ambigüedades en la instrucción."
 
 ### 2. Few-Shot Prompting
-Incluir ejemplos de entrada/salida para "calibrar" al modelo en una tarea específica. Es mucho más efectivo que cualquier instrucción larga.
+Incluir ejemplos de entrada/salida para "calibrar" al modelo en una tarea específica. Suele ser más efectivo que instrucciones largas cuando tenés ejemplos representativos.
 
 ### 3. Delimitadores y Estructura
 Usar XML, Markdown o JSON para separar instrucciones de datos de contexto. Esto evita que el modelo confunda el contenido con las órdenes.
