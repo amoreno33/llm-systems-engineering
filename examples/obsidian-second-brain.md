@@ -1,5 +1,17 @@
 # 🧠 Obsidian como "Second Brain" para IA — Ejemplo Práctico
 
+## El problema que resuelve
+
+Cada sesión con un agente empieza desde cero. El agente no sabe qué decisiones tomaste la semana pasada, qué tecnologías descartaste ni por qué el carrito vive en Redis y no en la base de datos. Tenés que re-explicar el contexto cada vez, y con el tiempo ese contexto se degrada o se pierde.
+
+Obsidian resuelve esto actuando como la **memoria persistente del proyecto**: un conjunto de archivos `.md` locales, conectados entre sí con links bidireccionales, que el agente puede leer directamente como contexto en cada sesión.
+
+Es la solución práctica para equipos o desarrolladores individuales que trabajan con sesiones sueltas sin un framework estructurado. En lugar de explicarle al agente "no uses Fastify porque lo rechazamos en el Sprint 3", tenés una nota `decisiones/no-fastify.md` que el agente lee antes de empezar.
+
+> **Obsidian es la memoria de largo plazo del proyecto. El agente es stateless; Obsidian no lo es.**
+
+---
+
 ## ¿Por qué Obsidian y no Notion/Confluence?
 
 | Feature | Obsidian | Notion | Confluence |
@@ -118,12 +130,12 @@ Cuando le pasás tu vault a un agente (o usás plugins como **Smart Connections*
 
 Eso es información que un RAG basado en vectores **pierde**.
 
-### Preparar tu vault para la demo (10 min):
+### Configurar tu vault (10 min):
 1. Descargá [Obsidian](https://obsidian.md/) (gratis)
 2. Creá un vault nuevo llamado `equipo-dev`
 3. Creá 5-6 notas con la estructura de arriba
 4. Conectalas con `[[links]]` como en el ejemplo de retry
-5. Abrí el Graph View (Ctrl+G) → Eso es lo que mostrás en la charla
+5. Abrí el Graph View (Ctrl+G) para visualizar las relaciones
 
 ### Plugins Recomendados para Integración con IA:
 | Plugin | Qué hace | Por qué importa |
@@ -132,16 +144,4 @@ Eso es información que un RAG basado en vectores **pierde**.
 | **[Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)** | Encuentra notas relacionadas semánticamente (no solo por link) | Descubre conexiones que no sabías que existían |
 | **[Templater](https://github.com/SilentVoid13/Templater)** | Templates dinámicos con JavaScript | Automatizar la creación de specs y decision logs |
 
----
 
-## Tip de Presentación: Demo en Vivo
-
-Si querés que este tip brille en la charla:
-
-1. Abrí tu Obsidian con un vault preparado (este ejemplo)
-2. Mostrá el Graph View con las líneas de conexión
-3. Decí: *"¿Ven estas líneas? Cada una es una decisión de arquitectura que se conecta con nuestro código. Cuando el agente lee esto, entiende el CONTEXTO de nuestro sistema, no solo fragmentos sueltos."*
-4. Abrí una nota y mostrá los `[[links]]`
-5. Decí: *"Esto es GraphRAG personal. Gratis. Local. Sin tokens."*
-
-La audiencia va a querer instalarlo antes de que termines la frase.
