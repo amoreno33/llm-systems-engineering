@@ -731,7 +731,59 @@ Usar **Zod** como biblioteca de validación en lugar de Joi.
 
 ---
 
-## 📚 Recursos Complementarios
+## �️ Persistencia y Memoria en Sistemas Agénticos
+
+Un agente no tiene memoria entre sesiones por defecto. Cada invocación comienza con una ventana de contexto vacía. La forma en que el sistema *rodea* al modelo — el runtime o harness — es lo que decide qué persiste y cómo.
+
+### Las 3 capas donde ocurre el aprendizaje
+
+Harrison Chase (CEO LangChain) define tres capas distintas donde un sistema agéntico puede "aprender" o persistir información:
+
+| Capa | Qué persiste | Quién lo controla | Ejemplo en Claude Code |
+| :--- | :--- | :--- | :--- |
+| **Modelo** | Pesos del modelo (fine-tuning) | El proveedor | Anthropic entrena nuevas versiones de Claude |
+| **Harness** | Código del runtime, reglas, tools | El equipo que construyó el harness | Claude Code (512k líneas de código, no el modelo) |
+| **Contexto** | Instrucciones, skills, memoria del usuario/org | Vos | `CLAUDE.md`, auto memory, `mcp.json` |
+
+> La tercera capa es la que un dev puede controlar directamente hoy.
+
+*Fuente: Harrison Chase, ["Continual learning for AI agents"](https://www.langchain.com/blog/continual-learning-for-ai-agents), LangChain blog, abril 2026.*
+
+### El principio del harness y la memoria
+
+> *"Asking to plug memory into an agent harness is like asking to plug driving into a car. Managing context, and therefore memory, is a core capability and responsibility of the agent harness."*
+>
+> — Sarah Wooders, CTO de Letta, citado por Harrison Chase en ["Your harness, your memory"](https://www.langchain.com/blog/your-harness-your-memory) (abril 2026)
+
+En términos prácticos: el harness (Claude Code, tu framework Python, LangGraph) decide:
+- Qué entra en la ventana de contexto en cada turno
+- Qué se guarda externamente entre sesiones
+- Qué sobrevive a la compactación (`/compact`)
+
+### Tipos de persistencia según alcance
+
+| Tipo | Duración | Mecanismo en Claude Code | Mecanismo en framework Python |
+| :--- | :--- | :--- | :--- |
+| **In-context** | Dentro de una sesión | Conversación + CLAUDE.md | Messages array |
+| **Cross-session** | Entre sesiones del mismo proyecto | Auto memory (`MEMORY.md`) | BD / archivos |
+| **Cross-agent** | Entre agentes distintos | CLAUDE.md compartido vía git | Memoria compartida externa |
+| **Organizacional** | Toda la organización | Managed policy CLAUDE.md | Config centralizado |
+
+### Spec-Kit: `.specify/memory/`
+
+Spec-Kit incluye un directorio de memoria del proyecto (`.specify/memory/`) con extensiones del catálogo oficial para administrarla:
+
+- **Memory Loader** — carga los archivos de `.specify/memory/` antes de cada comando del ciclo de vida para dar contexto de gobernanza al agente *(Read-only)*
+- **Memory MD** — memoria durable nativa del repo *(Read+Write)*
+- **MemoryLint** — audita conflictos entre `AGENTS.md` y la constitución del proyecto
+
+*Fuente: [Catálogo Community Extensions de Spec-Kit](https://github.com/github/spec-kit).*
+
+> **Nota de diseño:** Los archivos de contexto (CLAUDE.md, constitución SDD, specs) son hoy la forma más portable y controlable de persistencia. La memoria agéntica de largo plazo sigue siendo early-stage como campo. Ver gestión de ventana de contexto en [02 — LLM Engineering](../02-llm-engineering/context-window-deep-dive.md) y las implicaciones de gobernanza en [06 — Ops & Security](../06-llmops-security/README.md).
+
+---
+
+## �📚 Recursos Complementarios
 
 **Libros citados en esta sección:**
 - *Domain-Driven Design* — Eric Evans

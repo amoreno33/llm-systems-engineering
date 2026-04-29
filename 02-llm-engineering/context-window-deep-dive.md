@@ -236,4 +236,74 @@ Modelos como Mistral y DeepSeek no leen todo el contexto con la misma intensidad
 Cuando enviás el mismo bloque de texto (ej: tu CLAUDE.md) en múltiples llamadas, el proveedor guarda los cálculos de atención en cache. La segunda vez no recalcula → más rápido y más barato.
 
 ---
+
+## 🗄️ 9. Persistencia Cross-Session: Más Allá de la Ventana de Contexto
+
+Todo lo anterior aplica *dentro* de una sesión. El problema más grande es qué pasa *entre* sesiones: cada vez que cerrás y reabrís Claude Code, Cursor o cualquier agente, la ventana empieza vacía.
+
+**La pregunta clave:** ¿cómo hace el agente para no empezar desde cero cada vez?
+
+### Los dos mecanismos de Claude Code
+
+Según la [documentación oficial de Anthropic](https://code.claude.com/docs/en/memory), Claude Code tiene dos sistemas de memoria complementarios:
+
+| Sistema | Quién escribe | Qué contiene | Alcance | Límite de carga |
+| :--- | :--- | :--- | :--- | :--- |
+| **CLAUDE.md** | Vos | Instrucciones, reglas, decisiones | Proyecto / usuario / org | Sin límite (pero <200 líneas recomendado) |
+| **Auto memory** | El agente | Aprendizajes, preferencias, insights de debugging | Por proyecto, local a la máquina | Primeras 200 líneas o 25KB de `MEMORY.md` |
+
+**CLAUDE.md** se carga al inicio de *cada* sesión como contexto. Es el mecanismo de persistencia principal para reglas e instrucciones que el agente no debe olvidar.
+
+**Auto memory** vive en `~/.claude/projects/<project>/memory/MEMORY.md`. Claude lo escribe cuando considera que algo vale la pena recordar. Los archivos temáticos (`debugging.md`, `api-conventions.md`) se leen bajo demanda, no en el startup.
+
+### Qué sobrevive la compactación (`/compact`)
+
+Cuando la ventana se llena, Claude Code ejecuta una compactación: genera un resumen comprimido. Lo que **sobrevive**:
+- `CLAUDE.md` del project root — se re-inyecta desde disco
+- Auto memory — persiste en disco
+
+Lo que **no sobrevive**:
+- Instrucciones dadas solo en la conversación
+- `CLAUDE.md` de subdirectorios (no se re-inyectan automáticamente hasta que el agente accede a esos directorios)
+
+*Fuente: ["What survives compaction"](https://code.claude.com/docs/en/context-window), docs oficiales de Claude Code.*
+
+### La jerarquía de CLAUDE.md (de menor a mayor prioridad)
+
+```
+Managed policy CLAUDE.md     ← org-wide, no excluible
+    ↑
+~/.claude/rules/*.md         ← preferencias del usuario en todos los proyectos
+    ↑
+.claude/CLAUDE.md            ← proyecto compartido vía git (equipo)
+    ↑
+CLAUDE.local.md              ← preferencias personales del proyecto (en .gitignore)
+```
+
+> **La Constitución del SDD es exactamente esto**: externaliza en disco lo que de otro modo se perdería entre sesiones. Es la respuesta pragmática al problema de persistencia antes de que la industria tenga estándares maduros. Ver [Filosofía de Trabajo](../README.md#-filosofía-de-trabajo-de-vibe-coding-a-sdd).
+
+### Spec-Kit y `.specify/memory/`
+
+Spec-Kit tiene su propio directorio de memoria del proyecto: `.specify/memory/`. El catálogo oficial incluye extensiones específicas para esto:
+
+- **Memory Loader** — carga los archivos de `.specify/memory/` antes de cada comando del ciclo de vida, para dar contexto de gobernanza al agente. *(Read-only)*
+- **Memory MD** — memoria durable nativa del repo para proyectos Spec-Kit. *(Read+Write)*
+- **MemoryLint** — audita y corrige conflictos de límite entre `AGENTS.md` y la constitución.
+
+*Fuente: [Catálogo de extensiones de Spec-Kit](https://github.com/github/spec-kit), tabla de Community Extensions.*
+
+### El estado del arte: memoria agéntica es early-stage
+
+Harrison Chase (CEO LangChain) en "Your harness, your memory" (abril 2026) resume el estado actual:
+
+> *"Right now, memory as a concept is in its infancy. It's so early for memory. Transparently, we see that long term memory is often not part of the MVP. First you need to get an agent working generally, then you can worry about personalization."*
+
+Las implicaciones para tu diseño:
+- Long-term memory frecuentemente **no es parte del MVP** de un agente
+- No hay abstracciones estándar aún
+- Los archivos de contexto (CLAUDE.md, constitución, specs) son la forma **más portabe y controlable** de persistencia hoy
+
+Ver también: [Gobernanza de Memoria Agéntica](../06-llmops-security/README.md) para las implicaciones de vendor lock-in.
+
+---
 [Volver a LLM Engineering](./README.md) | [Volver a Context Orchestration](./context-orchestration.md) | [Volver al Inicio](../README.md)

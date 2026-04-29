@@ -52,6 +52,47 @@ Imagina que construyes un agente que resume correos o PDFs para tus usuarios.
 
 ---
 
+## 🧠 Gobernanza de Memoria Agéntica
+
+La memoria de un agente no es solo un feature — es un activo estratégico. Determina qué tan bien personalizada es la experiencia, qué aprendió el sistema, y cuánto esfuerzo se perdería si tuvieras que migrar de proveedor.
+
+### El riesgo: vendor lock-in vía memoria
+
+Harrison Chase (CEO LangChain) identifica un riesgo de gobernanza relevante para equipos de producción:
+
+> *"If you use a closed harness, especially if it's behind a proprietary API, you are choosing to yield control of your agent's memory to a third party."*
+>
+> — Harrison Chase, ["Your harness, your memory"](https://www.langchain.com/blog/your-harness-your-memory), LangChain blog, abril 2026.
+
+Ejemplos concretos reportados:
+
+| Proveedor | Situación | Implicación |
+| :--- | :--- | :--- |
+| **Anthropic** | Claude Managed Agents pone el harness completo detrás de una API | Memoria opaca, no exportable, no portabe entre modelos |
+| **OpenAI** | Codex genera resúmenes de compactación **encriptados** | Los resúmenes no son usables fuera del ecosistema OpenAI |
+| **Harness abierto** (LangGraph, Deep Agents) | El harness es código tuyo, memoria en tu BD | Control total, portabilidad entre modelos |
+
+### Preguntas de gobernanza antes de elegir un harness
+
+1. ¿Puedo exportar la memoria acumulada del agente si cambio de proveedor?
+2. ¿Qué sobrevive a `/compact` o al equivalente del sistema?
+3. ¿La memoria cross-session está en mi infraestructura o en la del proveedor?
+4. ¿El harness es open-source o puedo auditarlo?
+
+### Decisión de diseño: open vs. closed harness
+
+| Criterio | Harness cerrado (Anthropic Managed Agents, etc.) | Harness abierto (LangGraph, Deep Agents, tu propio) |
+| :--- | :--- | :--- |
+| **Tiempo de implementación** | Bajo | Alto |
+| **Control sobre la memoria** | Ninguno o limitado | Total |
+| **Portabilidad de modelo** | Bloqueada a un proveedor | Libre |
+| **Observabilidad** | Dependiente del proveedor | Configurable (LangSmith, Langfuse, etc.) |
+| **Escenario recomendado** | MVPs, prototipos, uso personal | Producción enterprise, multi-modelo, larga vida útil |
+
+> **Estado del arte (abril 2026):** La memoria agéntica de largo plazo es aún un área inmatura. No hay estándares consolidados. Los archivos de contexto (CLAUDE.md, constitución SDD, specs) son la forma más portabe y controlable de persistencia disponible hoy. *Fuente: Harrison Chase, LangChain blog, abril 2026.*
+
+---
+
 ## 🛠️ Herramientas Recomendadas
 | Categoría | Herramientas |
 | :--- | :--- |
