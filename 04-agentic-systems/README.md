@@ -258,6 +258,22 @@ Agente (paso REFACTOR):
 
 ---
 
+### 🪝 Hooks y Skills: Dónde vive cada concepto
+
+Una fuente frecuente de confusión en sistemas agénticos es mezclar tres capas que son distintas:
+
+| Capa | Quién define los hooks | Ejemplo |
+| :--- | :--- | :--- |
+| **Claude Code / Editor** | `settings.json` → scripts en `.claude/hooks/` | Bloquear `rm -rf` antes de ejecutar |
+| **Framework Python propio** | `runtime.register_hook()` | Validar spec antes de implementar |
+| **BMAD / Spec Kit** | El editor/runtime subyacente ejecuta los hooks | BMAD define el rol; Claude Code ejecuta el control |
+
+> **La regla central:** el LLM no tiene hooks. El runtime sí. Los hooks están en Claude Code, en tu framework, o en los guardrails de tu metodología — nunca dentro del modelo.
+
+> 📖 **Ver guía completa:** [Hooks & Skills — Las 3 Capas](../agentic-sdd-starter/docs/hooks-skills-guide.md)
+
+---
+
 ### 4️⃣ "Construimos Una Bola de Barro (Ball of Mud)"
 
 **El Problema:**

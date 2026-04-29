@@ -100,3 +100,16 @@ chmod +x .claude/hooks/*.sh scripts/*.sh
 ## Principio clave
 
 > Un agente sin spec improvisa. Un agente con spec ejecuta.
+
+---
+
+## 📚 Documentación adicional
+
+| Doc | Qué explica |
+| :--- | :--- |
+| **[Hooks & Skills: Dónde vive cada concepto](./docs/hooks-skills-guide.md)** | Separación clara entre declarar el hook, escribir el script y quién lo ejecuta. Cubre Claude Code, framework Python propio, BMAD y Spec Kit. |
+| **[Agent Workflow](./docs/agent-workflow.md)** | Flujo completo de trabajo con el agente. |
+| **[Adoption Playbook](./docs/adoption-playbook.md)** | Cómo adoptar SDD en equipo. |
+| **[CLAUDE.md Guide](./docs/claude-md-guide.md)** | Cómo escribir un CLAUDE.md efectivo. |
+| **[MCP Security](./docs/mcp-security.md)** | Seguridad en servidores MCP. |
+| **[PR Checklist](./docs/pr-checklist.md)** | Checklist para pull requests con agentes. |
