@@ -8,10 +8,11 @@
 | :--- | :--- | :--- |
 | **[01. Foundations](./01-foundations/README.md)** | Modern Core | Tokens, ventanas de contexto, temperature, model routing. Lo que afecta tu trabajo diario. |
 | **[02. LLM Engineering](./02-llm-engineering/README.md)** | Intelligence Layer | Cómo gestionar el contexto, reducir alucinaciones y estructurar prompts. |
-| **[03. Advanced RAG](./03-advanced-rag/README.md)** | Retrieval | Comparativa Naive RAG vs. Advanced RAG: query transform, reranking, hybrid search. |
+| **[03. Advanced RAG](./03-advanced-rag/README.md)** | Retrieval | Comparativa Naive RAG vs. Advanced RAG: query transform, reranking, hybrid search. [Referencias: [HyDE](https://arxiv.org/abs/2212.10496), [RRF](https://dl.acm.org/doi/10.1145/1148170.1148204)] |
 | **[04. Agentic Systems](./04-agentic-systems/README.md)** | Agents | Patrones de agentes, hooks, skills, SDD y persistencia de memoria. |
 | **[05. Cloud](./05-cloud-architectures/README.md)** | AWS & Azure | AWS Bedrock y Azure AI Foundry: servicios, cuándo usarlos, gobernanza enterprise. |
 | **[06. Ops & Security](./06-llmops-security/README.md)** | Governance | Versionado de prompts, observabilidad, prompt injection y gobernanza de memoria. |
+| **[07. High-Value Resources](./07-high-value-resources/README.md)** | Resources | Papers, repositorios de referencia y herramientas con links verificados. |
 
 ### [07. High-Value Resources](./07-high-value-resources/README.md)
 *   Papers, repositorios de referencia y herramientas con links verificados.
