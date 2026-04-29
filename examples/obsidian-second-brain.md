@@ -1,147 +1,112 @@
-# 🧠 Obsidian como "Second Brain" para IA — Ejemplo Práctico
+# 🧠 Obsidian como memoria persistente para sesiones con agentes
 
-## El problema que resuelve
+## El problema en una línea
 
-Cada sesión con un agente empieza desde cero. El agente no sabe qué decisiones tomaste la semana pasada, qué tecnologías descartaste ni por qué el carrito vive en Redis y no en la base de datos. Tenés que re-explicar el contexto cada vez, y con el tiempo ese contexto se degrada o se pierde.
+**El agente no recuerda nada entre sesiones.** Cada vez que abrís una sesión nueva, arranca sin contexto: no sabe qué decidiste, qué descartaste, ni cómo está estructurado tu sistema.
 
-Obsidian resuelve esto actuando como la **memoria persistente del proyecto**: un conjunto de archivos `.md` locales, conectados entre sí con links bidireccionales, que el agente puede leer directamente como contexto en cada sesión.
+## La solución
 
-Es la solución práctica para equipos o desarrolladores individuales que trabajan con sesiones sueltas sin un framework estructurado. En lugar de explicarle al agente "no uses Fastify porque lo rechazamos en el Sprint 3", tenés una nota `decisiones/no-fastify.md` que el agente lee antes de empezar.
+Obsidian es una aplicación de notas que guarda todo en archivos `.md` en tu disco. Eso significa que el agente puede leerlos directamente — sin APIs, sin exportaciones, sin configuración especial.
 
-> **Obsidian es la memoria de largo plazo del proyecto. El agente es stateless; Obsidian no lo es.**
+Usás Obsidian para guardar las decisiones, patrones y restricciones de tu proyecto. Al empezar cada sesión, le pasás las notas relevantes al agente como contexto. El agente ejecuta con información real del proyecto, no improvisa.
+
+> **El agente es stateless. Obsidian le da estado.**
 
 ---
 
-## ¿Por qué Obsidian y no Notion/Confluence?
+## Antes y después
 
-| Feature | Obsidian | Notion | Confluence |
-| :--- | :--- | :--- | :--- |
-| **Local-first** | ✅ Archivos `.md` en tu disco | ❌ Nube | ❌ Nube |
-| **Links bidireccionales** | ✅ `[[nota]]` | ⚠️ Limitado | ❌ No |
-| **Graph View** | ✅ Visualiza relaciones | ❌ No | ❌ No |
-| **Funciona offline** | ✅ Siempre | ❌ No | ❌ No |
-| **Lo lee la IA local** | ✅ Son `.md` planos | ⚠️ Requiere API | ⚠️ Requiere API |
-| **Gratis** | ✅ | ⚠️ Freemium | ❌ Pago |
+**Sin Obsidian — sesión 4 de un proyecto:**
 
-## Estructura de Vault para un Equipo de Desarrollo
+Le pedís al agente que agregue un módulo de descuentos. El agente genera:
+- cálculos con `float` (vos usás `Decimal` para dinero — ya lo habías decidido)
+- sugiere Google OAuth (el cliente lo rechazó en Sprint 2)
+- guarda el carrito en PostgreSQL (está en Redis — decisión de arquitectura)
 
-```
-📁 mi-vault-equipo/
-├── 📁 proyectos/
-│   ├── api-pagos.md
-│   ├── mobile-app.md
-│   └── dashboard-admin.md
-├── 📁 arquitectura/
-│   ├── decisiones/
-│   │   ├── 2025-04-14-refunds-async.md
-│   │   ├── 2025-04-16-decimal-js.md
-│   │   └── 2025-04-21-no-fastify.md
-│   ├── diagramas/
-│   │   └── flujo-pagos.canvas
-│   └── patrones/
-│       ├── retry-con-backoff.md
-│       ├── cache-invalidation.md
-│       └── idempotency-keys.md
-├── 📁 runbooks/
-│   ├── deploy-produccion.md
-│   ├── rollback-emergencia.md
-│   └── investigar-webhook-fallido.md
-├── 📁 ia-prompts/
-│   ├── claude-md-template.md
-│   ├── spec-template.md
-│   └── prompts-utiles/
-│       ├── code-review.md
-│       ├── generar-tests.md
-│       └── refactoring-seguro.md
-└── 📁 daily/
-    ├── 2025-04-28.md
-    └── ...
-```
+Perdiste tiempo corrigiendo cosas que ya estaban resueltas.
 
-## Ejemplo: Nota de Arquitectura con Links
+**Con Obsidian — misma sesión:**
 
-Archivo: `arquitectura/patrones/retry-con-backoff.md`
+Antes de pedirle al agente, le pasás:
+- `decisiones/manejo-precios.md` → "Usar Decimal. Float tiene errores de precisión en dinero."
+- `decisiones/auth.md` → "NO Google OAuth. Solo JWT. Decisión del cliente en Sprint 2."
+- `arquitectura/carrito.md` → "El carrito vive en Redis, no en la base de datos."
+
+El agente genera código consistente con el proyecto desde el primer intento.
+
+---
+
+## Cómo funciona: los links bidireccionales
+
+La diferencia con un simple carpeta de archivos son los **links bidireccionales**: podés referenciar una nota desde otra con `[[nombre-nota]]`.
+
+Ejemplo — nota `patrones/retry-con-backoff.md`:
 
 ```markdown
 # Retry con Exponential Backoff
 
-## Patrón
-Cuando una llamada externa falla (Stripe, AWS, etc), reintentar con delays crecientes.
-
-## Implementación
-- Delay base: 1 segundo
-- Factor: 2x por intento
-- Max intentos: 3
-- Jitter: ±500ms aleatorio (evita thundering herd)
+Cuando una llamada externa falla (Stripe, AWS), reintentar con delays crecientes.
 
 ## Dónde lo usamos
-- [[api-pagos]] → Webhooks de Stripe (ver [[2025-04-23-retry-webhooks]])
+- [[api-pagos]] → Webhooks de Stripe
 - [[mobile-app]] → Push notifications con Firebase
-- [[dashboard-admin]] → Export de reportes grandes
 
-## Código de referencia
-```typescript
-async function withRetry<T>(
-  fn: () => Promise<T>,
-  maxRetries = 3,
-  baseDelay = 1000
-): Promise<T> {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      return await fn();
-    } catch (error) {
-      if (i === maxRetries - 1) throw error;
-      const jitter = Math.random() * 500;
-      const delay = baseDelay * Math.pow(2, i) + jitter;
-      await new Promise(r => setTimeout(r, delay));
-    }
-  }
-  throw new Error('Unreachable');
-}
-```
+## NO hacer
+- ❌ Reintentar errores 4xx (cliente equivocado, reintentar no cambia nada)
+- ❌ Reintentar sin jitter (thundering herd — todos los workers reintentan juntos)
 
-## Errores comunes
-- ❌ NO reintentar errores 4xx (son errores del cliente, reintentar no va a cambiar nada)
-- ❌ NO reintentar sin jitter (todos los workers reintentan al mismo tiempo → DDoS a tu propio servicio)
-- ✅ SÍ loguear cada retry con el intento número y el delay aplicado
-
-## Links relacionados
+## Ver también
 - [[idempotency-keys]] — Combinar con retry para evitar duplicados
-- [[cache-invalidation]] — El retry puede devolver datos cacheados, tener en cuenta
 ```
 
-## El Poder del Graph View
+Cuando tenés 20+ notas conectadas así, el Graph View de Obsidian muestra visualmente qué partes del sistema se relacionan entre sí. Eso también le da contexto al agente sobre el impacto de un cambio.
 
-Cuando tu vault tiene 50+ notas con `[[links]]`, el Graph View de Obsidian te muestra:
+---
+
+## Estructura de vault recomendada
 
 ```
-┌──────────────┐     ┌───────────────────┐     ┌──────────────┐
-│  api-pagos   │────▶│ retry-con-backoff  │◀────│  mobile-app  │
-└──────┬───────┘     └────────┬──────────┘     └──────────────┘
-       │                      │
-       ▼                      ▼
-┌──────────────┐     ┌───────────────────┐
-│ decimal-js   │     │ idempotency-keys  │
-└──────────────┘     └───────────────────┘
+📁 mi-vault/
+├── 📁 decisiones/          ← ADRs: qué se decidió y por qué
+│   ├── no-fastify.md
+│   ├── decimal-para-precios.md
+│   └── redis-para-carrito.md
+├── 📁 arquitectura/        ← Patrones y diagramas del sistema
+│   ├── retry-con-backoff.md
+│   └── idempotency-keys.md
+├── 📁 runbooks/            ← Procedimientos operativos
+│   └── deploy-produccion.md
+└── 📁 contexto-agente/     ← Lo que le pasás al agente cada sesión
+    ├── stack.md
+    ├── restricciones.md
+    └── estado-actual.md
 ```
 
-**Esto es un GraphRAG personal.** 
-Cuando le pasás tu vault a un agente (o usás plugins como **Smart Connections** o **Copilot for Obsidian**), el agente no solo busca por texto sino que entiende que `retry-con-backoff` está conectado a `api-pagos` y a `idempotency-keys`. 
+La carpeta `contexto-agente/` es la más práctica: es un resumen del estado actual del proyecto para pasarle al agente al inicio de cada sesión.
 
-Eso es información que un RAG basado en vectores **pierde**.
+---
 
-### Configurar tu vault (10 min):
+## Plugins útiles para integración con IA
+
+| Plugin | Qué hace |
+| :--- | :--- |
+| **[Copilot](https://github.com/logancyang/obsidian-copilot)** | Chat con IA dentro de Obsidian usando tus notas como contexto |
+| **[Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)** | Encuentra notas relacionadas semánticamente, no solo por link |
+| **[Templater](https://github.com/SilentVoid13/Templater)** | Templates dinámicos para crear decisiones y specs con estructura consistente |
+
+---
+
+## Por qué Obsidian y no Notion o Confluence
+
+Los archivos `.md` son locales y legibles por cualquier herramienta. Notion y Confluence requieren API o exportación para que un agente los lea. Obsidian no requiere nada — el agente lee los archivos directamente desde el disco.
+
+---
+
+## Configurar tu vault (10 min)
+
 1. Descargá [Obsidian](https://obsidian.md/) (gratis)
-2. Creá un vault nuevo llamado `equipo-dev`
-3. Creá 5-6 notas con la estructura de arriba
-4. Conectalas con `[[links]]` como en el ejemplo de retry
-5. Abrí el Graph View (Ctrl+G) para visualizar las relaciones
-
-### Plugins Recomendados para Integración con IA:
-| Plugin | Qué hace | Por qué importa |
-| :--- | :--- | :--- |
-| **[Copilot](https://github.com/logancyang/obsidian-copilot)** | Chat con IA dentro de Obsidian usando tus notas como contexto | GraphRAG gratis sin infraestructura |
-| **[Smart Connections](https://github.com/brianpetro/obsidian-smart-connections)** | Encuentra notas relacionadas semánticamente (no solo por link) | Descubre conexiones que no sabías que existían |
-| **[Templater](https://github.com/SilentVoid13/Templater)** | Templates dinámicos con JavaScript | Automatizar la creación de specs y decision logs |
-
+2. Creá un vault nuevo en la raíz de tu proyecto o en una carpeta compartida del equipo
+3. Creá las carpetas `decisiones/`, `arquitectura/`, `contexto-agente/`
+4. Escribí las 3-5 decisiones más importantes del proyecto actual
+5. Conectalas con `[[links]]` donde corresponda
 
